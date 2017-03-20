@@ -1,14 +1,14 @@
 
 
 /* --------------------------Codigo de Usuario----------------------- */
-package compilador;
+package arm.compiler;
 
 import java_cup.runtime.*;
 import java.io.Reader;
 import java.util.*;
-import compilador.BancoInstrucciones;
-import compilador.ManejadorErrores;
-      
+import arm.compiler.BancoInstrucciones;
+import arm.compiler.ManejadorErrores;
+       
 %% //inicio de opciones
    
 /* ------ Seccion de opciones y declaraciones de JFlex -------------- */  
@@ -76,12 +76,16 @@ Espacio = [ \t\f]
 Decimal = [0-9][0-9]*
 Etiqueta = [0-9]*[a-zA-Z][a-zA-Z]*[0-9]*
 Registro = "R"[0-9] | "R""1"[0-5]
+Vector = "V"[0-9] | "V""1"[0-5]
 
 And = and
 Eor = eor
+Eorv = eorv
 Sub = sub
+Subv = subv
 Rsb = rsb
 Add = add
+Addv = addv
 Adc = adc
 Sbc = sbc
 Rsc = rsc
@@ -89,15 +93,21 @@ Cmp = cmp
 Cmn = cmn
 Orr = orr
 Mov = mov
+Movv = movv
 Lsl = lsl
+Lslv = lslv
+Lsrv = lsrv
 Asr = asr
 Rrx = rrx
 Ror = ror
+Rorv = rorv
+Rolv = rolv
 Bic = bic
 Mvn = mvn
 Mul = mul
 Mla = mla
 Str = str
+Strv = strv
 Ldr = ldr
 Strb = strb
 Ldrb = ldrb
@@ -144,15 +154,27 @@ Bgt = bgt
 						  
 	{Eor}                {añadirTermino ("eor");
                           return symbol(sym.EOR); }
+
+	{Eorv}                {añadirTermino ("eorv");
+                          return symbol(sym.EORV); }
 						  
 	{Sub}                {añadirTermino ("sub");
                           return symbol(sym.SUB); }
+
+	{Subv}                {añadirTermino ("subv");
+                          return symbol(sym.SUBV); }
 						  
 	{Rsb}                {añadirTermino ("rsb");
                           return symbol(sym.RSB); }
 						  
 	{Add}                {añadirTermino ("add");
+		          System.out.println("Prueba");
                           return symbol(sym.ADD); }
+	
+	{Addv}                {añadirTermino ("addv");
+
+                          return symbol(sym.ADDV); }
+	
 						  
 	{Adc}                {añadirTermino ("adc");
                           return symbol(sym.ADC); }
@@ -182,10 +204,22 @@ Bgt = bgt
                           return symbol(sym.CMN); }
 						  
 	{Mov}                {añadirTermino ("mov");
+
                           return symbol(sym.MOV); }
+	
+	{Movv}                {añadirTermino ("movv");
+
+                          return symbol(sym.MOVV); }
 						  
 	{Lsl}                {añadirTermino ("lsl");
                           return symbol(sym.LSL); }
+	
+	{Lslv}                {añadirTermino ("lslv");
+                          return symbol(sym.LSLV); }
+	
+	{Lsrv}                {añadirTermino ("lsrv");
+                          return symbol(sym.LSRV); }
+	
 						  
 	{Asr}                {añadirTermino ("asr");
                           return symbol(sym.ASR); }
@@ -195,12 +229,21 @@ Bgt = bgt
 						  
 	{Ror}                {añadirTermino ("ror");
                           return symbol(sym.ROR); }
+
+	{Rorv}                {añadirTermino ("rorv");
+                          return symbol(sym.RORV); }
+
+	{Rolv}                {añadirTermino ("rolv");
+                          return symbol(sym.ROLV); }
 						  
 	{Mla}                {añadirTermino ("mla");
                           return symbol(sym.MLA); }
 						  
 	{Str}                {añadirTermino ("str");
                           return symbol(sym.STR); }
+
+	{Strv}                {añadirTermino ("strv");
+                          return symbol(sym.STRV); }
 						  
 	{Ldr}                {añadirTermino ("ldr");
                           return symbol(sym.LDR); }
@@ -241,6 +284,10 @@ Bgt = bgt
 	{Registro}	{  
 					  añadirTermino (yytext().toLowerCase());
                       return symbol(sym.REGISTRO, yytext()); }
+	{Vector}	{  
+					  añadirTermino (yytext().toLowerCase());
+                      return symbol(sym.VECTOR, yytext()); }
+
 					  
 	{Etiqueta}	{  	  //System.out.println("Etiqueta ingresada");
 					  añadirTermino (yytext());
@@ -251,6 +298,6 @@ Bgt = bgt
 /* Si el token contenido en la entrada no coincide con ninguna regla
     entonces se marca un token ilegal */
 [^]                    { 
-							System.out.println("Se ha añadido un error lexico");
+							System.out.println("Se ha añadido un error lexico"+yytext());
 							moduloErrores.setErrorLexico(yycolumn, yyline, yytext());
 						}

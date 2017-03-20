@@ -63,7 +63,7 @@ public class AdministradorAnalisis {
             Path currentRelativePath = Paths.get("");
             String nuevoDir = currentRelativePath.toAbsolutePath().toString()
                     + File.separator + "src" + File.separator
-                    + "compilador" + File.separator + arch.getName();
+                    + "arm" + File.separator +  "compiler" + File.separator+ arch.getName();
             File archViejo = new File(nuevoDir);
             archViejo.delete();
             if (arch.renameTo(new File(nuevoDir))) {
