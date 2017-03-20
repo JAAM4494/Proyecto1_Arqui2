@@ -1,0 +1,118 @@
+ 
+   
+/* ---------------Seccion de declaraciones preliminares--------------------*/
+package compilador;
+
+/* Import the class java_cup.runtime.*  */
+import java_cup.runtime.*;
+import java.io.FileReader;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+   
+/* Codigo del parser, se copia integramente a la clase final.
+    Agregamos el manejo de errores. */
+parser code {:
+    
+	ManejadorErrores moduloErrores = new ManejadorErrores();
+	
+    /* Reporte de error encontrado. */
+    public void report_error(String message, Object info) {
+	
+        if (info instanceof java_cup.runtime.Symbol) {
+            java_cup.runtime.Symbol s = ((java_cup.runtime.Symbol) info);
+            if (s.left >= 0) {                
+                if (s.right >= 0){
+					moduloErrores.setErrorSintactico((s.left+1), (s.right+1));
+					}
+            }
+        }
+    }
+
+    public void report_fatal_error(String message, Object info) {
+        report_error(message, info); 
+    }
+
+
+    /* Metodo main para garantizar la ejecucion del analizador
+       lexico y sintactico, ademas que se pase como parametro la tabla
+       de simbolos correspondiente. */
+    public static void main(String[] args){
+        try {
+            AnalizadorSintactico asin = new AnalizadorSintactico(
+                    new AnalizadorLexico( new FileReader(args[0])));
+            Object result = asin.parse().value;
+        } catch (Exception ex) {
+        }
+    }
+:};
+   
+
+   
+/* ------------Declaracion de simbolos terminales y no terminales---------- */
+   
+/* Terminales (tokens obtenidos por el analizador lexico).  
+
+   Terminales que no tienen un valor son listados primero, los terminales que
+   tienen un valor como los enteros son listados en la segunda o demas lineas. */
+terminal            COMA, LLAVEDER, LLAVEIZQ, REGISTRO, ETIQUETA, NUMERAL,
+					AND, EOR, SUB, RSB, ADD, ADC, SBC, RSC, ORR, MVN, BIC, MUL, CMP, 
+					CMN, MOV, LSL, ASR, RRX, ROR, MLA, STR, LDR, STRB, LDRB, B, BEQ, BNE, BGT, BLT;
+terminal Integer   DECIMAL;
+   
+/* No terminales usados en la seccion gramatical. 
+
+   Primero se lista los no terminales que tienen un valor Object y despues
+   se lista los no terminales que tienen un entero. Un Object se refiere a que
+   no tienen tipo, pudiendo ser entero o String. */
+non terminal Object     expr_list, inmediato, instruccion1, instruccionN, empty, terminoMemoria, label,
+						dosRegistros, tresRegistros, cuatroRegistros, unRegistroImm, dosRegistrosImm, unRegistro;   
+
+
+/* ------------------- Seccion de la gramatica ------------------------ */
+
+expr_list ::= instruccion1 instruccionN;
+instruccionN ::= expr_list | empty;
+
+instruccion1 ::= 
+				AND tresRegistros | AND dosRegistrosImm |
+				EOR tresRegistros | EOR dosRegistrosImm |
+				SUB tresRegistros | SUB dosRegistrosImm |
+				RSB tresRegistros | RSB dosRegistrosImm |
+				ADD tresRegistros | ADD dosRegistrosImm |
+				ADC tresRegistros | ADC dosRegistrosImm |
+				SBC tresRegistros | SBC dosRegistrosImm |
+				RSC tresRegistros | RSC dosRegistrosImm |
+				ORR tresRegistros | ORR dosRegistrosImm |
+				MVN dosRegistros  | MVN unRegistroImm |
+				BIC tresRegistros | BIC dosRegistrosImm |
+				MUL tresRegistros |
+				CMP dosRegistros  | CMP unRegistroImm |
+				CMN dosRegistros  | CMN unRegistroImm |
+				MOV dosRegistros  | MOV unRegistroImm |
+				LSL tresRegistros | LSL dosRegistrosImm |
+				ASR tresRegistros | ASR dosRegistrosImm |
+				RRX dosRegistros  | 
+				ROR tresRegistros | ROR dosRegistrosImm |
+				MLA cuatroRegistros |
+				STR unRegistro terminoMemoria |
+				LDR unRegistro terminoMemoria |
+				STRB unRegistro terminoMemoria |
+				LDRB unRegistro terminoMemoria |
+				B ETIQUETA |
+				BEQ ETIQUETA |
+				BNE ETIQUETA |
+				BGT ETIQUETA |
+				BLT ETIQUETA |
+				label
+				;
+				
+dosRegistros ::= REGISTRO COMA REGISTRO;
+tresRegistros ::= REGISTRO COMA REGISTRO COMA REGISTRO;
+cuatroRegistros ::= REGISTRO COMA REGISTRO COMA REGISTRO COMA REGISTRO;
+dosRegistrosImm ::= REGISTRO COMA REGISTRO COMA inmediato;
+unRegistroImm ::= REGISTRO COMA inmediato;
+unRegistro ::= REGISTRO COMA;
+terminoMemoria ::= LLAVEIZQ REGISTRO COMA REGISTRO LLAVEDER | LLAVEIZQ REGISTRO COMA inmediato LLAVEDER;
+inmediato ::= NUMERAL DECIMAL;
+empty ::= /* nothing */;
+label ::= ETIQUETA;
