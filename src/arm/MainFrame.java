@@ -5,6 +5,7 @@
  */
 package arm;
 
+import arm.SIMDExt.BancoVectores;
 import arm.assembler.Decodificacion;
 import arm.compiler.BancoInstrucciones;
 import arm.compiler.ManejadorErrores;
@@ -69,6 +70,7 @@ public class MainFrame extends javax.swing.JFrame {
     
     
     BancoRegistros bancoRegistros = new BancoRegistros();
+        BancoVectores bancoVectores = new BancoVectores();
     BancoBanderas bancoBanderas = new BancoBanderas();
     BancoBranch bancoBranch = new BancoBranch();
     Decodificacion ensamblador = new Decodificacion();
@@ -1100,6 +1102,11 @@ public class MainFrame extends javax.swing.JFrame {
             } catch (IOException ex) {
                 System.out.println("Error en el boton");
             }
+            String vectorsText="Vectors" +"\n";
+            vectorsText+=bancoVectores.obtenerVectores();
+            jLabel24.setText("<html>"+ vectorsText.replaceAll("\n", "<br/>")+"</html>");
+
+            
             
             //Impresion de los registros en pantalla
             ArrayList<Long> registros = new ArrayList<>();
@@ -1109,6 +1116,7 @@ public class MainFrame extends javax.swing.JFrame {
                 System.out.println("Error obteniendo los registros a imprimir");
             }
             updateRegisters(registros);
+            
             
             //Impresion de las banderas en pantalla
             ArrayList<String> banderasString = bancoBanderas.obtenerBanderas();

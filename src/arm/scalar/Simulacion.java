@@ -14,7 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-
+import arm.SIMDExt.*;
 /**
  *
  * @author jaam
@@ -136,7 +136,7 @@ public class Simulacion {
         ALU ALU = new ALU();
         SetBanderas setBanderas = new SetBanderas();
 
-        //System.out.println("La instruccion recibida en la decodificacion es " + instruccion);
+        System.out.println("La instruccion recibida en la decodificacion es " + instruccion);
         String nemonico = instruccion.get(0);
         String destino = instruccion.get(1);
         if (destino.equals("r15")) { // caso de no pc quitar esta linea
@@ -145,7 +145,7 @@ public class Simulacion {
         String operando1 = instruccion.get(2);
         String operando2;
         int size = instruccion.size();
-
+        
         if (size == 3) {//instruccion de dos registros                 
             operando1 = instruccion.get(1);
             operando2 = instruccion.get(2);
@@ -154,6 +154,7 @@ public class Simulacion {
             if (instruccion.get(2).equals("#"))//instruccion de un registro con imm
             {
                 operando1 = instruccion.get(1);
+                //System.out.println("instruccion con inmediato:"+operando1);
             }
             operando2 = instruccion.get(3);
             if (operando2.equals("r15")){
@@ -173,15 +174,28 @@ public class Simulacion {
             case "eor":
                 ALU.ALU(destino, operando1, operando2, "xor");
                 break;
+            case "eorv":
+                ALUVectorial.ALUVectorial(destino, operando1, operando2, "xor");
+                break;
+                
             case "sub":
                 ALU.ALU(destino, operando1, operando2, "resta");
                 break;
+             case "subv":
+                ALUVectorial.ALUVectorial(destino, operando1, operando2, "subv");
+                break;
+  
             case "rsb":
                 ALU.ALU(destino, operando1, operando2, "resta inversa");
                 break;
             case "add":
                 ALU.ALU(destino, operando1, operando2, "suma");
                 break;
+            
+            case "addv":
+                ALUVectorial.ALUVectorial(destino, operando1, operando2, "addv");
+                break;
+                
             case "adc":
                 ALU.ALU(destino, operando1, operando2, "suma con carry");
                 break;
@@ -212,8 +226,18 @@ public class Simulacion {
             case "mov":
                 ALU.ALU(destino, operando1, operando2, "mov");
                 break;
+            case "movv":
+                ALUVectorial.ALUVectorial(destino, operando1, operando2, "movv");
+                break;    
+       
             case "lsl":
                 ALU.ALU(destino, operando1, operando2, "shift left");
+                break;           
+            case "lslv":
+                ALUVectorial.ALUVectorial(destino, operando1, operando2, "shift left");
+                break;
+            case "lsrv":
+                ALUVectorial.ALUVectorial(destino, operando1, operando2, "shift right");
                 break;
             case "asr":
                 ALU.ALU(destino, operando1, operando2, "shift right aritmetico");
@@ -224,15 +248,29 @@ public class Simulacion {
             case "ror":
                 ALU.rotate(destino, operando1, operando2);
                 break;
+            case "rorv":
+                ALUVectorial.rotateVectorialR(destino, operando1, operando2);
+                break;
+            case "rolv":
+                ALUVectorial.rotateVectorialL(destino, operando1, operando2);
+                break;
             case "mla":
                 ALU.MLA(destino, operando1, instruccion.get(3), instruccion.get(4));
                 break;
             case "str":
                 ALU.MEM(destino, operando1, operando2, "str");
-                break;
+                break;   
+             case "strv":
+                ALUVectorial.MEM(destino, operando1, operando2, "strv");
+                break;       
+                
             case "ldr":
                 ALU.MEM(destino, operando1, operando2, "ldr");
                 break;
+             case "ldrv":
+                ALU.MEM(destino, operando1, operando2, "ldr");
+                break;    
+                
             case "strb":
                 ALU.MEM(destino, operando1, operando2, "strb");
                 break;

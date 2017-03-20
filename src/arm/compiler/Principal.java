@@ -14,6 +14,7 @@ import arm.assembler.Decodificacion;
 import java.io.IOException;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import arm.SIMDExt.*;
 
 /**
  *
@@ -27,7 +28,10 @@ public class Principal {
         AdministradorAnalisis analisis = new AdministradorAnalisis();
         analisis.iniciar(instruccionesString);
         BancoRegistros bancoRegistros = new BancoRegistros();
+        BancoVectores bancoVectores = new BancoVectores();
+        bancoVectores.inicioVectores();
         //bancoRegistros.inicioRegistros();
+        
         ManejadorErrores moduloErrores = new ManejadorErrores();
         Simulacion simulacion = new Simulacion();
         Decodificacion decodificacion = new Decodificacion();
