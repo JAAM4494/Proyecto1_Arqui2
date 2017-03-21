@@ -141,14 +141,11 @@ public class ALUVectorial {
         
         System.out.println("realizando mem vectorial");   
         dato = BancoVectores.getVector(Integer.parseInt(Rd.substring(1)));
-        System.out.println("Imprimiendo dato"+dato[0]);   
-
+        
+        
         int decimalData=fromByteArray(dato);
         
         String dato_hexa = Long.toString(decimalData, 16); //decimal to Hex
-
-        
-        //String dato_hexa = Integer.toString(fromByteArray(dato), 16); //decimal to Hex
         
         registro = BancoRegistros.getRegistro(Integer.parseInt(Rn.substring(1)));
        
@@ -162,6 +159,11 @@ public class ALUVectorial {
             case "strv":
                 Memoria.Store_word((int) (imm + registro), dato_hexa); // Revisar que por castear a int no se pierdan valores
                 break;
+            case "ldrv":
+                int nuevo_valor = Memoria.hex2decimal(Memoria.Load_word((int) (imm + registro)));
+                byte[] vector=toByteArray(nuevo_valor);
+                BancoVectores.setVector(Integer.parseInt(Rd.substring(1)),vector );                break;
+                
           
         }
     }

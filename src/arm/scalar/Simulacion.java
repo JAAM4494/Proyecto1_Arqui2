@@ -262,13 +262,14 @@ public class Simulacion {
                 break;   
              case "strv":
                 ALUVectorial.MEM(destino, operando1, operando2, "strv");
-                break;       
+                break;  
+                       
                 
             case "ldr":
                 ALU.MEM(destino, operando1, operando2, "ldr");
                 break;
              case "ldrv":
-                ALU.MEM(destino, operando1, operando2, "ldr");
+                ALUVectorial.MEM(destino, operando1, operando2, "ldrv");
                 break;    
                 
             case "strb":

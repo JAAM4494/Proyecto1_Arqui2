@@ -109,6 +109,7 @@ Mla = mla
 Str = str
 Strv = strv
 Ldr = ldr
+Ldrv = ldrv
 Strb = strb
 Ldrb = ldrb
 B = b
@@ -247,6 +248,8 @@ Bgt = bgt
 						  
 	{Ldr}                {añadirTermino ("ldr");
                           return symbol(sym.LDR); }
+	{Ldrv}                {añadirTermino ("ldrv");
+                          return symbol(sym.LDRV); }
 						  
 	{Strb}                {añadirTermino ("strb");
                           return symbol(sym.STRB); }

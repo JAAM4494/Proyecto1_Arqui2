@@ -1,4 +1,5 @@
 movv v0,#1
-strv v0,[r1,#1024]
+strv v0, [r1,#1024]
+ldrv v1,[r1,#1024]
 
 ADD R0, R0, #0
