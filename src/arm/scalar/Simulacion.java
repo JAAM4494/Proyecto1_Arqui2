@@ -144,6 +144,11 @@ public class Simulacion {
         }
         String operando1 = instruccion.get(2);
         String operando2;
+        String operando3="";
+        String operando4="";
+        String operando5="";
+
+
         int size = instruccion.size();
         
         if (size == 3) {//instruccion de dos registros                 
@@ -161,7 +166,13 @@ public class Simulacion {
                 reportarError("El registro R15 no es válido como operando2", "");
             }
            
-        } else //instruccion de dos registros con imm
+        } else if(size ==10)
+            { 
+            operando1=instruccion.get(3); 
+            operando2=instruccion.get(5);  
+            operando3=instruccion.get(7);
+            operando4=instruccion.get(9);}
+        else //instruccion de dos registros con imm
         {
             operando2 = instruccion.get(4);
 
@@ -227,9 +238,8 @@ public class Simulacion {
                 ALU.ALU(destino, operando1, operando2, "mov");
                 break;
             case "movv":
-                ALUVectorial.ALUVectorial(destino, operando1, operando2, "movv");
+                movvVectorial(destino,operando1,operando2,operando3,operando4 );
                 break;    
-       
             case "lsl":
                 ALU.ALU(destino, operando1, operando2, "shift left");
                 break;           
@@ -282,5 +292,27 @@ public class Simulacion {
                 //System.out.println("Default switch decodificacion");
                 break;
         }
+    }
+    
+    
+    private void movvVectorial(String destino,String operando1,String operando2,String operando3,String operando4){
+        System.out.println("destino"+destino);
+            System.out.println("operando 1: "+operando1);
+            System.out.println("operando 2: "+operando2);
+            System.out.println("operando 3: "+operando3);
+            System.out.println("operando 4: "+operando4);
+        
+        if (operando4.equals("")==true) {
+            System.out.println("vacio");
+            ALUVectorial.ALUVectorial(destino, operando1, operando2, "movv");
+        }
+        else{
+            
+
+         ALUVectorial.movvVectorial(destino, operando1, operando2, operando3, operando4);
+
+        }
+        
+        
     }
 }

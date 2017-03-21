@@ -78,10 +78,41 @@ public class ALUVectorial {
 
          BancoVectores.setVector(Integer.parseInt(destino.substring(1)), resultado);
 
+    }
+    
+    
+    
+    public static void movvVectorial(String destino, String nombreOperando1, String nombreOperando2, String nombreOperando3,String nombreOperando4){
+        
+        byte[] resultado = new byte[4],operando2= new byte[4] ;
+        int tempOp1 = Integer.parseInt(nombreOperando1);
+        int tempOp2 = Integer.parseInt(nombreOperando2);
+        int tempOp3 = Integer.parseInt(nombreOperando3);
+        int tempOp4 = Integer.parseInt(nombreOperando4);
+
+        String binaryOp1= Integer.toBinaryString(tempOp1);
+        String binaryOp2= Integer.toBinaryString(tempOp2);
+        String binaryOp3= Integer.toBinaryString(tempOp3);
+        String binaryOp4= Integer.toBinaryString(tempOp4);
+
+        
+        resultado[0]  = Byte.parseByte(binaryOp1, 2);
+        resultado[1]  = Byte.parseByte(binaryOp2, 2);
+        resultado[2]  = Byte.parseByte(binaryOp3, 2);
+        resultado[3]  = Byte.parseByte(binaryOp4, 2);  
          
         
-        
+    //    System.out.println("Resultado!: "+  resultado[0]);
+     //   System.out.println("operacion!: "+ operacion);
+
+         BancoVectores.setVector(Integer.parseInt(destino.substring(1)), resultado);
+
     }
+    
+    
+    
+    
+    
     
     private static byte[] immMov(String nombreOperando2){
         byte[] operando2 = new byte[4];
@@ -94,6 +125,9 @@ public class ALUVectorial {
          operando2[3]  = Byte.parseByte(binaryOp2, 2);  
          return operando2;
     }
+    
+    
+   
     
      public static void rotateVectorialR(String Rd, String Rn, String Src2){
         byte[] operando2 = new byte[4];

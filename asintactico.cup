@@ -65,7 +65,7 @@ terminal Integer   DECIMAL;
    se lista los no terminales que tienen un entero. Un Object se refiere a que
    no tienen tipo, pudiendo ser entero o String. */
 non terminal Object     expr_list, inmediato, instruccion1, instruccionN, empty, terminoMemoria, label,
-						dosRegistros, tresRegistros, cuatroRegistros, unRegistroImm,unVector , unVectorImm, dosRegistrosImm, unRegistro , dosVectores,dosVectoresImm,tresVectores;   
+						dosRegistros, tresRegistros, cuatroRegistros, unRegistroImm,unVector , unVectorImm, dosRegistrosImm, unRegistro , dosVectores,dosVectoresImm,tresVectores, unVectorcuatroImm;   
 
 
 /* ------------------- Seccion de la gramatica ------------------------ */
@@ -93,6 +93,7 @@ instruccion1 ::=
 				CMN dosRegistros  | CMN unRegistroImm |
 				MOV dosRegistros  | MOV unRegistroImm |
 				MOVV dosVectores  | MOVV unVectorImm  |
+				MOVV unVectorcuatroImm |
 				LSL tresRegistros | LSL dosRegistrosImm |
 				LSLV dosVectoresImm |
 				LSRV dosVectoresImm |
@@ -125,6 +126,7 @@ dosRegistrosImm ::= REGISTRO COMA REGISTRO COMA inmediato;
 dosVectoresImm ::= VECTOR COMA VECTOR COMA inmediato;
 unRegistroImm ::= REGISTRO COMA inmediato;
 unVectorImm ::= VECTOR COMA inmediato;
+unVectorcuatroImm ::= VECTOR COMA inmediato COMA inmediato COMA inmediato COMA inmediato ;
 unRegistro ::= REGISTRO COMA;
 unVector ::= VECTOR COMA;
 terminoMemoria ::= LLAVEIZQ REGISTRO COMA REGISTRO LLAVEDER | LLAVEIZQ REGISTRO COMA inmediato LLAVEDER;
