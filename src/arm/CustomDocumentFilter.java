@@ -117,7 +117,8 @@ public class CustomDocumentFilter extends DocumentFilter {
         StringBuilder sb = new StringBuilder();
         String[] array = {"add", "sub", "mul", "and", "eor", "rsb", "adc", "sbc", "rsc",
             "cmp", "cmn", "orr", "mov", "lsl", "asr", "rrx", "ror", "bic", "mvn", "mla",
-            "str", "ldr", "strb", "ldrb", "b","beq", "bne", "blt", "bgt"};
+            "str", "ldr", "strb", "ldrb", "b","beq", "bne", "blt", "bgt","movv",
+            "addv","subv","eorv","lslv","lsrv","rorv","rolv","strv","ldrv"};
         for (String token : array) {
             sb.append("\\b"); // Start of word boundary
             sb.append(token);
@@ -135,7 +136,8 @@ public class CustomDocumentFilter extends DocumentFilter {
     private Pattern buildPattern2() {
         StringBuilder sb = new StringBuilder();
         String[] array = {"r0", "r1", "r2", "r3", "r4", "r5", "r6", "r7", "r8",
-            "r9", "r10", "r11", "r12", "r13", "r14", "r15"};
+            "r9", "r10", "r11", "r12", "r13", "r14", "r15","v0","v1","v2","v3",
+        "v4","v5","v6","v7","v8","v9","v10","v11","v12","v13","v14" };
         for (String token : array) {
             sb.append("\\b"); // Start of word boundary
             sb.append(token);
