@@ -73,7 +73,7 @@ import arm.compiler.ManejadorErrores;
 Salto = \r|\n|\r\n
 Comment = ";" ~{Salto}
 Espacio = [ \t\f]
-Decimal = [0-9][0-9]*
+Decimal = "-"[0-9][0-9]* | [0-9][0-9]*
 Etiqueta = [0-9]*[a-zA-Z][a-zA-Z]*[0-9]*
 Registro = "R"[0-9] | "R""1"[0-5]
 Vector = "V"[0-9] | "V""1"[0-5]
