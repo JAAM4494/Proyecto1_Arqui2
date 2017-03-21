@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package arm;
+
 import arm.SIMDExt.BancoVectores;
 import arm.assembler.Decodificacion;
 import arm.compiler.BancoInstrucciones;
@@ -58,21 +59,17 @@ public class MainFrame extends javax.swing.JFrame {
 
     private String stepCode;
     private boolean stepFlag;
-    
+
     private Scanner stepScanner;
-    
-    
+
     BancoRegistros bancoRegistros = new BancoRegistros();
-        BancoVectores bancoVectores = new BancoVectores();
+    BancoVectores bancoVectores = new BancoVectores();
     BancoBanderas bancoBanderas = new BancoBanderas();
     BancoBranch bancoBranch = new BancoBranch();
     Decodificacion ensamblador = new Decodificacion();
     Memoria memoria = new Memoria();
-    
-    
-    //public static boolean tomasuloUpdate = false;
 
-   
+    //public static boolean tomasuloUpdate = false;
     public MainFrame() throws InterruptedException, IOException {
         initComponents();
         iniciarComponentes();
@@ -104,98 +101,97 @@ public class MainFrame extends javax.swing.JFrame {
 
     }
 
-
     private void updateRegisters(ArrayList<Long> pRegisters) {
         for (int i = 0; i < pRegisters.size(); i++) {
             long tempVal = 0;
             tempVal = pRegisters.get(i);
-            
+
             String stringRegVal = "";
-            
+
             if (hexFlag) {
-            stringRegVal = Long.toHexString(tempVal);
-            stringRegVal = "0x" + stringRegVal.toUpperCase();
-        } else if (binFlag) {
-            stringRegVal = Long.toBinaryString(tempVal);
-            stringRegVal = stringRegVal.toUpperCase();
-        }
+                stringRegVal = Long.toHexString(tempVal);
+                stringRegVal = "0x" + stringRegVal.toUpperCase();
+            } else if (binFlag) {
+                stringRegVal = Long.toBinaryString(tempVal);
+                stringRegVal = stringRegVal.toUpperCase();
+            }
             switch (i) {
-            case 0:
-                r0Tv.setText(stringRegVal);
-                break;
-            case 1:
-                r1Tv.setText(stringRegVal);
-                break;
-            case 2:
-                r2Tv.setText(stringRegVal);
-                break;
-            case 3:
-                r3Tv.setText(stringRegVal);
-                break;
-            case 4:
-                r4Tv.setText(stringRegVal);
-                break;
-            case 5:
-                r5Tv.setText(stringRegVal);
-                break;
-            case 6:
-                r6Tv.setText(stringRegVal);
-                break;
-            case 7:
-                r7Tv.setText(stringRegVal);
-                break;
-            case 8:
-                r8Tv.setText(stringRegVal);
-                break;
-            case 9:
-                r9Tv.setText(stringRegVal);
-                break;
-            case 10:
-                r10Tv.setText(stringRegVal);
-                break;
-            case 11:
-                r11Tv.setText(stringRegVal);
-                break;
-            case 12:
-                r12Tv.setText(stringRegVal);
-                break;
-            case 13:
-                r13Tv.setText(stringRegVal);
-                break;
-            case 14:
-                r14Tv.setText(stringRegVal);
-                break;
-            case 15:
-                r15Tv.setText(stringRegVal);
-                break;
-        }
+                case 0:
+                    r0Tv.setText(stringRegVal);
+                    break;
+                case 1:
+                    r1Tv.setText(stringRegVal);
+                    break;
+                case 2:
+                    r2Tv.setText(stringRegVal);
+                    break;
+                case 3:
+                    r3Tv.setText(stringRegVal);
+                    break;
+                case 4:
+                    r4Tv.setText(stringRegVal);
+                    break;
+                case 5:
+                    r5Tv.setText(stringRegVal);
+                    break;
+                case 6:
+                    r6Tv.setText(stringRegVal);
+                    break;
+                case 7:
+                    r7Tv.setText(stringRegVal);
+                    break;
+                case 8:
+                    r8Tv.setText(stringRegVal);
+                    break;
+                case 9:
+                    r9Tv.setText(stringRegVal);
+                    break;
+                case 10:
+                    r10Tv.setText(stringRegVal);
+                    break;
+                case 11:
+                    r11Tv.setText(stringRegVal);
+                    break;
+                case 12:
+                    r12Tv.setText(stringRegVal);
+                    break;
+                case 13:
+                    r13Tv.setText(stringRegVal);
+                    break;
+                case 14:
+                    r14Tv.setText(stringRegVal);
+                    break;
+                case 15:
+                    r15Tv.setText(stringRegVal);
+                    break;
+            }
         }
     }
-    
+
     public void setFlags(ArrayList<String> pFlags) {
         for (int i = 0; i < pFlags.size(); i++) {
             String tempVal = pFlags.get(i);
-            if(i==0) {
+            if (i == 0) {
                 nTv.setText(tempVal);
-            } else if(i==1) {
+            } else if (i == 1) {
                 zTv.setText(tempVal);
-            } else if(i==2) {
+            } else if (i == 2) {
                 cTv.setText(tempVal);
             } else {
                 vTv.setText(tempVal);
             }
         }
     }
-    
-    public void iniciarComponentes() throws IOException{
+
+    public void iniciarComponentes() throws IOException {
         ArrayList<Long> registros = new ArrayList<>();
-            try {
-                registros = bancoRegistros.obtenerRegistrosIniciales();
-            } catch (IOException ex) {
-                System.out.println("Error obteniendo los registros a imprimir");
-            }
-            //updateRegisters(registros);
-        
+        try {
+            registros = bancoRegistros.obtenerRegistrosIniciales();
+        } catch (IOException ex) {
+            System.out.println("Error obteniendo los registros a imprimir");
+        }
+        //updateRegisters(registros);
+
         ArrayList<String> banderasString = bancoBanderas.obtenerBanderasIniciales();
         setFlags(banderasString);
     }
@@ -1004,7 +1000,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void maCodeMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_maCodeMenuActionPerformed
         // TODO add your handling code here:
-                // TODO add your handling code here:
+        // TODO add your handling code here:
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -1038,67 +1034,97 @@ public class MainFrame extends javax.swing.JFrame {
         });
     }//GEN-LAST:event_maCodeMenuActionPerformed
 
-    
     private void resetFunction() throws IOException {
-        
+
         ensamblador.borrarEnsamblaje();
         memoria.inicia_memoria();
         //Borrar el contenido actual de las instrucciones, banderas, ensamblaje, memoria, branch y registros
         //bancoInstrucciones.borrarInstrucciones();
         bancoBanderas.borrarBanderas();
-            
+
         bancoRegistros.borrarRegistros();
         //moduloErrores.borrarErrores();
         bancoBranch.borrarBranch();
-        
-        
-        
+
         this.stepFlag = false;
-        
-        if(this.hexFlag) {
-            r1Tv.setText("0x");r2Tv.setText("0x");r3Tv.setText("0x");
-            r4Tv.setText("0x");r5Tv.setText("0x");r6Tv.setText("0x");
-            r7Tv.setText("0x");r8Tv.setText("0x");r9Tv.setText("0x");
-            r10Tv.setText("0x");r11Tv.setText("0x");r12Tv.setText("0x");
-            r13Tv.setText("0x");r14Tv.setText("0x");r15Tv.setText("0x");
+
+        if (this.hexFlag) {
+            r1Tv.setText("0x");
+            r2Tv.setText("0x");
+            r3Tv.setText("0x");
+            r4Tv.setText("0x");
+            r5Tv.setText("0x");
+            r6Tv.setText("0x");
+            r7Tv.setText("0x");
+            r8Tv.setText("0x");
+            r9Tv.setText("0x");
+            r10Tv.setText("0x");
+            r11Tv.setText("0x");
+            r12Tv.setText("0x");
+            r13Tv.setText("0x");
+            r14Tv.setText("0x");
+            r15Tv.setText("0x");
             r0Tv.setText("0x");
         }
-        if(this.decFlag || this.binFlag) {
-            r1Tv.setText("0");r2Tv.setText("0");r3Tv.setText("0");
-            r4Tv.setText("0");r5Tv.setText("0");r6Tv.setText("0");
-            r7Tv.setText("0");r8Tv.setText("0");r9Tv.setText("0");
-            r10Tv.setText("0");r11Tv.setText("0");r12Tv.setText("0");
-            r13Tv.setText("0");r14Tv.setText("0");r15Tv.setText("0");
+        if (this.decFlag || this.binFlag) {
+            r1Tv.setText("0");
+            r2Tv.setText("0");
+            r3Tv.setText("0");
+            r4Tv.setText("0");
+            r5Tv.setText("0");
+            r6Tv.setText("0");
+            r7Tv.setText("0");
+            r8Tv.setText("0");
+            r9Tv.setText("0");
+            r10Tv.setText("0");
+            r11Tv.setText("0");
+            r12Tv.setText("0");
+            r13Tv.setText("0");
+            r14Tv.setText("0");
+            r15Tv.setText("0");
             r0Tv.setText("0");
         }
     }
-    
+
     private void runStepScript() {
         System.out.println("Missing!!!");
     }
 
     private void runScript() {
-            try {                                               
+
+        this.stepFlag = false;
+
+        try {
             Principal compilador = new Principal();
             BancoInstrucciones bancoInstrucciones = new BancoInstrucciones();
             ManejadorErrores moduloErrores = new ManejadorErrores();
             ensamblador.borrarEnsamblaje();
             memoria.inicia_memoria();
             //bancoBranch.borrarBranch();
-                    
-            String instruccionesString = mainTextPane.getText() + "\n" + "\n" + "ADD R0, R0, #0";
-                System.out.println(instruccionesString);
+
+            String source = "";
+            JTextPane tempPane = null;
+            int textPaneSelected = jTabbedPane1.getSelectedIndex();
+
+            if (textPaneSelected != -1) {
+                tempPane = paneList.get(textPaneSelected);
+            }
+
+            if (tempPane != null) {
+                source = tempPane.getText();
+            }
+
+            String instruccionesString = source + "\n" + "\n" + "ADD R0, R0, #0";
+            System.out.println(instruccionesString);
             try {
                 compilador.principal(instruccionesString);
             } catch (IOException ex) {
                 System.out.println("Error en el boton");
             }
-            String vectorsText="Vectors" +"\n";
-            vectorsText+=bancoVectores.obtenerVectores();
-            jLabel24.setText("<html>"+ vectorsText.replaceAll("\n", "<br/>")+"</html>");
+            String vectorsText = "Vectors" + "\n";
+            vectorsText += bancoVectores.obtenerVectores();
+            jLabel24.setText("<html>" + vectorsText.replaceAll("\n", "<br/>") + "</html>");
 
-            
-            
             //Impresion de los registros en pantalla
             ArrayList<Long> registros = new ArrayList<>();
             try {
@@ -1107,22 +1133,21 @@ public class MainFrame extends javax.swing.JFrame {
                 System.out.println("Error obteniendo los registros a imprimir");
             }
             updateRegisters(registros);
-            
-            
+
             //Impresion de las banderas en pantalla
             ArrayList<String> banderasString = bancoBanderas.obtenerBanderas();
             setFlags(banderasString);
-            
+
             //Hacer el aproximado de ejecucion
             int cantidadInstrucciones = bancoInstrucciones.cantidadInstrucciones();
             double tiempoEjecucion = 0.01 * cantidadInstrucciones;
             String tiempoEjecucionString = tiempoEjecucion + " ms";
             exeTimeTv.setText(tiempoEjecucionString);
-            
+
             //Borrar el contenido actual de las instrucciones, banderas, ensamblaje, memoria, branch y registros
             bancoInstrucciones.borrarInstrucciones();
             bancoBanderas.borrarBanderas();
-            
+
             bancoRegistros.borrarRegistros();
             moduloErrores.borrarErrores();
             bancoBranch.borrarBranch();
@@ -1211,7 +1236,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void newScript(String pContent) {
         this.stepFlag = false;
-        
+
         JTextPane newScriptPane = new JTextPane();
         newScriptPane.setLayout(new BorderLayout());
         newScriptPane.setText(pContent);
@@ -1237,7 +1262,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void openScript() {
         this.stepFlag = false;
-        
+
         JFileChooser Buscador = new JFileChooser();
         Buscador.setAcceptAllFileFilterUsed(false);
         Buscador.setMultiSelectionEnabled(false);

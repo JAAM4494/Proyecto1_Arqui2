@@ -11,6 +11,7 @@ import static java.lang.Thread.sleep;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -24,17 +25,19 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * @author jaam
  */
 public class AppMainFrame extends javax.swing.JFrame {
-    
+
     private Path pathDeArchivo;
     private String pathRelativo;
     private String retornoArchivo;
+
+    private ArrayList<ArrayList<ColorModel>> mainMatrix;
 
     /**
      * Creates new form AppMainFrame
      */
     public AppMainFrame() {
         initComponents();
-        
+
         this.setName("Encrypt-App");
         this.setResizable(false);
         this.setLocationRelativeTo(null);
@@ -43,31 +46,96 @@ public class AppMainFrame extends javax.swing.JFrame {
         jPanel2.setBackground(Color.LIGHT_GRAY);
         jPanel3.setBackground(Color.LIGHT_GRAY);
         jPanel5.setBackground(Color.LIGHT_GRAY);
-        
+
         //originalImage.setIcon(new ImageIcon(getClass().getResource("/application/images/firefox.jpg")));
         //encryptedImage.setIcon(new ImageIcon(getClass().getResource("/application/images/firefox.jpg")));
         //desencryptedImage.setIcon(new ImageIcon(getClass().getResource("/application/images/firefox.jpg")));
     }
-    
+
     private void encryptFunction() {
-        
-        try {
-            ImageManager manager = new ImageManager(pathDeArchivo);
-            manager.imageToGrayScale();
-            
-            sleep(2000);
-            
-            encryptedImage.setIcon(new ImageIcon(getClass().getResource("/application/images/grayscale.jpg")));
-        } catch (InterruptedException ex) {
-            Logger.getLogger(AppMainFrame.class.getName()).log(Level.SEVERE, null, ex);
+
+        ImageProcessing process = new ImageProcessing();
+
+        int index = algorithmsBox.getSelectedIndex();
+
+        String key = new String(privateKeyEntry.getPassword());
+        int shiftIndex = shiftNumberBox.getSelectedIndex();
+        String shiftSelection = shiftNumberBox.getItemAt(shiftIndex);
+
+        String redColor = new String(redColorEntry.getPassword());
+        String greenColor = new String(greenColorEntry.getPassword());
+        String blueColor = new String(blueColorEntry.getPassword());
+        String alphaColor = new String(alphaValueEntry.getPassword());
+
+        ColorModel keyVector = new ColorModel();
+        keyVector.setRed(Integer.parseInt(redColor));
+        keyVector.setGreen(Integer.parseInt(greenColor));
+        keyVector.setBlue(Integer.parseInt(blueColor));
+        keyVector.setAlpha(Integer.parseInt(alphaColor));
+
+        switch (index) {
+            case 0:
+                process.encryptImage(mainMatrix, "xor", Integer.parseInt(key),
+                        Integer.parseInt(shiftSelection), keyVector);
+                break;
+            case 1:
+                process.encryptImage(mainMatrix, "shift-s", Integer.parseInt(key),
+                        Integer.parseInt(shiftSelection), keyVector);
+                break;
+            case 2:
+                process.encryptImage(mainMatrix, "shift-c", Integer.parseInt(key),
+                        Integer.parseInt(shiftSelection), keyVector);
+                break;
+            default:
+                process.encryptImage(mainMatrix, "add", Integer.parseInt(key),
+                        Integer.parseInt(shiftSelection), keyVector);
+                break;
         }
-        
+        //encryptedImage.setIcon(new ImageIcon(getClass().getResource("/application/images/encrypted.jpg")));
     }
-    
+
     private void desencryptFunction() {
         
+        ImageProcessing process = new ImageProcessing();
+
+        int index = algorithmsBox.getSelectedIndex();
+
+        String key = new String(privateKeyEntry.getPassword());
+        int shiftIndex = shiftNumberBox.getSelectedIndex();
+        String shiftSelection = shiftNumberBox.getItemAt(shiftIndex);
+
+        String redColor = new String(redColorEntry.getPassword());
+        String greenColor = new String(greenColorEntry.getPassword());
+        String blueColor = new String(blueColorEntry.getPassword());
+        String alphaColor = new String(alphaValueEntry.getPassword());
+
+        ColorModel keyVector = new ColorModel();
+        keyVector.setRed(Integer.parseInt(redColor));
+        keyVector.setGreen(Integer.parseInt(greenColor));
+        keyVector.setBlue(Integer.parseInt(blueColor));
+        keyVector.setAlpha(Integer.parseInt(alphaColor));
+
+        switch (index) {
+            case 0:
+                process.desencryptImage(mainMatrix, "xor", Integer.parseInt(key),
+                        Integer.parseInt(shiftSelection), keyVector);
+                break;
+            case 1:
+                process.desencryptImage(mainMatrix, "shift-s", Integer.parseInt(key),
+                        Integer.parseInt(shiftSelection), keyVector);
+                break;
+            case 2:
+                process.desencryptImage(mainMatrix, "shift-c", Integer.parseInt(key),
+                        Integer.parseInt(shiftSelection), keyVector);
+                break;
+            default:
+                process.desencryptImage(mainMatrix, "add", Integer.parseInt(key),
+                        Integer.parseInt(shiftSelection), keyVector);
+                break;
+        }
+        //desencryptedImage.setIcon(new ImageIcon(getClass().getResource("/application/images/desencrypted.jpg")));
     }
-    
+
     private void openImages() {
         JFileChooser Buscador = new JFileChooser();
         Buscador.setAcceptAllFileFilterUsed(false);
@@ -79,11 +147,16 @@ public class AppMainFrame extends javax.swing.JFrame {
             pathDeArchivo = Paths.get(file.getAbsolutePath());
             retornoArchivo = new String(Files.readAllBytes(pathDeArchivo));
             //
-            pathRelativo = "/"+pathDeArchivo.getParent().getParent().getFileName() + 
-                    "/" + pathDeArchivo.getParent().getFileName() +"/"+ pathDeArchivo.getFileName();
-            
+            pathRelativo = "/" + pathDeArchivo.getParent().getParent().getFileName()
+                    + "/" + pathDeArchivo.getParent().getFileName() + "/" + pathDeArchivo.getFileName();
+
             originalImage.setIcon(new ImageIcon(getClass().getResource(pathRelativo)));
-            
+
+            // pass image to grayScale and set matrix
+            ImageManager manager = new ImageManager(pathDeArchivo);
+            manager.imageToGrayScale();
+            mainMatrix = manager.getImageGrayPixels();
+
             //newScript(retornoArchivo);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "ERROR, we can't load the file");
@@ -115,15 +188,15 @@ public class AppMainFrame extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
-        jPasswordField1 = new javax.swing.JPasswordField();
-        jPasswordField2 = new javax.swing.JPasswordField();
-        jPasswordField3 = new javax.swing.JPasswordField();
+        redColorEntry = new javax.swing.JPasswordField();
+        greenColorEntry = new javax.swing.JPasswordField();
+        blueColorEntry = new javax.swing.JPasswordField();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
-        jPasswordField4 = new javax.swing.JPasswordField();
+        alphaValueEntry = new javax.swing.JPasswordField();
         jLabel12 = new javax.swing.JLabel();
         originalImage = new javax.swing.JLabel();
         encryptedImage = new javax.swing.JLabel();
@@ -269,11 +342,11 @@ public class AppMainFrame extends javax.swing.JFrame {
 
         jLabel4.setText("Vector Key Values:");
 
-        jPasswordField1.setToolTipText("Red Value");
+        redColorEntry.setToolTipText("Red Value");
 
-        jPasswordField2.setToolTipText("Green Value");
+        greenColorEntry.setToolTipText("Green Value");
 
-        jPasswordField3.setToolTipText("Blue Value");
+        blueColorEntry.setToolTipText("Blue Value");
 
         jLabel7.setText("R:");
 
@@ -286,7 +359,7 @@ public class AppMainFrame extends javax.swing.JFrame {
 
         jLabel10.setText("A:");
 
-        jPasswordField4.setToolTipText("Alpha Value");
+        alphaValueEntry.setToolTipText("Alpha Value");
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -308,10 +381,10 @@ public class AppMainFrame extends javax.swing.JFrame {
                                 .addComponent(jLabel10)
                                 .addGap(18, 18, 18)))
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jPasswordField1, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
-                            .addComponent(jPasswordField2)
-                            .addComponent(jPasswordField3)
-                            .addComponent(jPasswordField4))))
+                            .addComponent(redColorEntry, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
+                            .addComponent(greenColorEntry)
+                            .addComponent(blueColorEntry)
+                            .addComponent(alphaValueEntry))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
@@ -323,19 +396,19 @@ public class AppMainFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(redColorEntry, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jPasswordField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(greenColorEntry, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
-                    .addComponent(jPasswordField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(blueColorEntry, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel10)
-                    .addComponent(jPasswordField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(alphaValueEntry, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -487,6 +560,8 @@ public class AppMainFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> algorithmsBox;
+    private javax.swing.JPasswordField alphaValueEntry;
+    private javax.swing.JPasswordField blueColorEntry;
     private javax.swing.JButton desencryptBtn;
     private javax.swing.JMenuItem desencryptMenu;
     private javax.swing.JLabel desencryptedImage;
@@ -494,6 +569,7 @@ public class AppMainFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem encryptMenu;
     private javax.swing.JLabel encryptedImage;
     private javax.swing.JMenuItem exitMenu;
+    private javax.swing.JPasswordField greenColorEntry;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -515,12 +591,9 @@ public class AppMainFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JPasswordField jPasswordField1;
-    private javax.swing.JPasswordField jPasswordField2;
-    private javax.swing.JPasswordField jPasswordField3;
-    private javax.swing.JPasswordField jPasswordField4;
     private javax.swing.JLabel originalImage;
     private javax.swing.JPasswordField privateKeyEntry;
+    private javax.swing.JPasswordField redColorEntry;
     private javax.swing.JMenuItem selectIamgeMenu;
     private javax.swing.JButton selectImageBtn;
     private javax.swing.JComboBox<String> shiftNumberBox;

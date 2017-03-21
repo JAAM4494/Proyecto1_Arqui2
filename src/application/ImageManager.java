@@ -26,10 +26,18 @@ public class ImageManager {
     private String parentPath;
     private String imagePath;
 
+    private ArrayList<ArrayList<ColorModel>> grayPixels;
+
     public ImageManager(Path pPath) {
         imagePath = pPath.toString();
         parentPath = pPath.getParent().toString();
+
+        grayPixels = new ArrayList<>();
         //System.out.println(parentPath);
+    }
+    
+    public ArrayList<ArrayList<ColorModel>> getImageGrayPixels() {
+        return grayPixels;
     }
 
     public ArrayList<ArrayList<ColorModel>> getImagePixels() throws IOException {
@@ -37,7 +45,7 @@ public class ImageManager {
         image = ImageIO.read(input);
         width = image.getWidth();
         height = image.getHeight();
-        
+
         ArrayList<ArrayList<ColorModel>> pixels = new ArrayList<>();
 
         for (int i = 0; i < height; i++) {
@@ -53,7 +61,7 @@ public class ImageManager {
             }
             pixels.add(pixelLine);
         }
-        
+
         return pixels;
     }
 
@@ -65,6 +73,7 @@ public class ImageManager {
             height = image.getHeight();
 
             for (int i = 0; i < height; i++) {
+                ArrayList<ColorModel> pixelLine = new ArrayList<>();
                 for (int j = 0; j < width; j++) {
 
                     Color c = new Color(image.getRGB(j, i));
@@ -74,13 +83,20 @@ public class ImageManager {
                     Color newColor = new Color(red + green + blue,
                             red + green + blue, red + green + blue);
 
-                    image.setRGB(j, i, newColor.getRGB());
+                    //image.setRGB(j, i, newColor.getRGB());
+
+                    ColorModel temp = new ColorModel();
+                    temp.setRed(red);
+                    temp.setGreen(green);
+                    temp.setBlue(blue);
+                    temp.setAlpha(c.getAlpha());
+                    pixelLine.add(temp);
                 }
+                grayPixels.add(pixelLine);
             }
 
-            File output = new File(parentPath + "/grayscale.jpg");
-            ImageIO.write(image, "jpg", output);
-
+            // File output = new File(parentPath + "/grayscale.jpg");
+            // ImageIO.write(image, "jpg", output);
         } catch (Exception e) {
             System.out.println("ERROR..!!!");
             System.out.println(e);

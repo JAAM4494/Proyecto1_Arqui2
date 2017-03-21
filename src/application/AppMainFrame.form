@@ -386,10 +386,10 @@
                               </Group>
                           </Group>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="jPasswordField1" alignment="0" pref="40" max="32767" attributes="0"/>
-                              <Component id="jPasswordField2" alignment="0" max="32767" attributes="0"/>
-                              <Component id="jPasswordField3" alignment="0" max="32767" attributes="0"/>
-                              <Component id="jPasswordField4" alignment="0" max="32767" attributes="0"/>
+                              <Component id="redColorEntry" alignment="0" pref="40" max="32767" attributes="0"/>
+                              <Component id="greenColorEntry" alignment="0" max="32767" attributes="0"/>
+                              <Component id="blueColorEntry" alignment="0" max="32767" attributes="0"/>
+                              <Component id="alphaValueEntry" alignment="0" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -406,22 +406,22 @@
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jPasswordField1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="redColorEntry" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jPasswordField2" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="greenColorEntry" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel8" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel9" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jPasswordField3" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="blueColorEntry" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="jLabel10" min="-2" max="-2" attributes="0"/>
-                      <Component id="jPasswordField4" min="-2" max="-2" attributes="0"/>
+                      <Component id="alphaValueEntry" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
@@ -434,17 +434,17 @@
             <Property name="text" type="java.lang.String" value="Vector Key Values:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JPasswordField" name="jPasswordField1">
+        <Component class="javax.swing.JPasswordField" name="redColorEntry">
           <Properties>
             <Property name="toolTipText" type="java.lang.String" value="Red Value"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JPasswordField" name="jPasswordField2">
+        <Component class="javax.swing.JPasswordField" name="greenColorEntry">
           <Properties>
             <Property name="toolTipText" type="java.lang.String" value="Green Value"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JPasswordField" name="jPasswordField3">
+        <Component class="javax.swing.JPasswordField" name="blueColorEntry">
           <Properties>
             <Property name="toolTipText" type="java.lang.String" value="Blue Value"/>
           </Properties>
@@ -477,7 +477,7 @@
             <Property name="text" type="java.lang.String" value="A:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JPasswordField" name="jPasswordField4">
+        <Component class="javax.swing.JPasswordField" name="alphaValueEntry">
           <Properties>
             <Property name="toolTipText" type="java.lang.String" value="Alpha Value"/>
           </Properties>

@@ -10,11 +10,35 @@ package application;
  * @author jaam
  */
 public class ColorModel {
-    
+
     private int red;
     private int green;
     private int blue;
     private int alpha;
+
+    /*
+    int i = 234;
+    byte b = (byte) i;
+    System.out.println (b); // -22
+    int i2 = b & 0xFF;
+    System.out.println (i2); // 234
+    */
+
+    public byte getRedByte() {
+        return (byte) red;
+    }
+
+    public byte getGreenByte() {
+        return (byte) green;
+    }
+
+    public byte getBlueByte() {
+        return (byte) blue;
+    }
+
+    public byte getAlphaByte() {
+        return (byte) alpha;
+    }
 
     public int getRed() {
         return red;
@@ -47,5 +71,5 @@ public class ColorModel {
     public void setAlpha(int alpha) {
         this.alpha = alpha;
     }
-    
+
 }
