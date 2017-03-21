@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package arm;
-
 import arm.SIMDExt.BancoVectores;
 import arm.assembler.Decodificacion;
 import arm.compiler.BancoInstrucciones;
@@ -30,18 +29,12 @@ import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.filechooser.FileNameExtensionFilter;
-
-
 import arm.help.Converter;
 import arm.scalar.BancoBanderas;
 import arm.scalar.BancoBranch;
 import arm.scalar.BancoRegistros;
 import arm.scalar.Memoria;
 
-/**
- *
- * @author jaam
- */
 public class MainFrame extends javax.swing.JFrame {
 
     private CustomDocumentFilter docFilter;
@@ -79,9 +72,7 @@ public class MainFrame extends javax.swing.JFrame {
     
     //public static boolean tomasuloUpdate = false;
 
-    /**
-     * Creates new form MainFrame
-     */
+   
     public MainFrame() throws InterruptedException, IOException {
         initComponents();
         iniciarComponentes();

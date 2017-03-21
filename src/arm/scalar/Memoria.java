@@ -162,6 +162,22 @@ public class Memoria {
             setMemoria((resultado * 4) + 1024, dato);
         }
     }
+    
+    public static void Store_Vector(int posicion, String dato) {
+        revisa_posicion(posicion, 1);
+        int resultado = (posicion - 1024) / 4;
+        if (bandera) {
+            if (dato.length() < 8) {
+                for (int i = dato.length(); i < 8; i++) {
+                    dato = "0" + dato;
+                }
+            }
+            Memoria_Ram[resultado] = dato;
+            setMemoria((resultado * 4) + 1024, dato);
+            
+        }
+    }
+
 
     public static int hex2decimal(String s) {
         String digits = "0123456789ABCDEF";
