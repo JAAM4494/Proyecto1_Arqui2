@@ -5,6 +5,11 @@
  */
 package arm.SIMDExt;
 
+import arm.scalar.BancoRegistros;
+import arm.scalar.Memoria;
+import java.nio.ByteBuffer;
+
+
 /**
  *
  * @author edwin
@@ -50,10 +55,10 @@ public class ALUVectorial {
                 break;
             
             case "shift right":
-                resultado[0]=(byte)(operando1[0]<< operando2[0]);
-                resultado[1]=(byte)(operando1[1]<< operando2[1]);
-                resultado[2]=(byte)(operando1[2]<< operando2[2]);
-                resultado[3]=(byte)(operando1[3]<< operando2[3]);
+                resultado[0]=(byte)(operando1[0]>> operando2[0]);
+                resultado[1]=(byte)(operando1[1]>> operando2[1]);
+                resultado[2]=(byte)(operando1[2]>> operando2[2]);
+                resultado[3]=(byte)(operando1[3]>> operando2[3]);
                 break; 
              case "xor":
                 resultado[0]=(byte)(operando1[0] ^ operando2[0]);
@@ -88,8 +93,6 @@ public class ALUVectorial {
          operando2[2]  = Byte.parseByte(binaryOp2, 2);
          operando2[3]  = Byte.parseByte(binaryOp2, 2);  
          return operando2;
-        
-        
     }
     
      public static void rotateVectorialR(String Rd, String Rn, String Src2){
@@ -133,40 +136,50 @@ public class ALUVectorial {
      
      public static void MEM(String Rd, String Rn, String Src2, String inst) {
         byte[] dato;
-        byte[] registro;
-        long inm;
+        long registro;
+        long imm;
         
         System.out.println("realizando mem vectorial");   
-    /*
         dato = BancoVectores.getVector(Integer.parseInt(Rd.substring(1)));
-        String dato_hexa = Long.toString(dato, 16); //decimal to Hex
-        registro = BancoVectores.getVector(Integer.parseInt(Rn.substring(1)));
+        System.out.println("Imprimiendo dato"+dato[0]);   
+
+        int decimalData=fromByteArray(dato);
+        
+        String dato_hexa = Long.toString(decimalData, 16); //decimal to Hex
+
+        
+        //String dato_hexa = Integer.toString(fromByteArray(dato), 16); //decimal to Hex
+        
+        registro = BancoRegistros.getRegistro(Integer.parseInt(Rn.substring(1)));
        
         if (Src2.contains("r")) { //Significa que es un registro
-            inm = BancoRegistros.getRegistro(Integer.parseInt(Src2.substring(1)));
+            imm = BancoRegistros.getRegistro(Integer.parseInt(Src2.substring(1)));
         } else { //Significa que es un inmediato
-            inm = Integer.parseInt(Src2);
+            imm = Integer.parseInt(Src2);
         }
 
         switch (inst) {
-            case "str":
-                Memoria.Store_word((int) (inm + registro), dato_hexa); // Revisar que por castear a int no se pierdan valores
+            case "strv":
+                Memoria.Store_word((int) (imm + registro), dato_hexa); // Revisar que por castear a int no se pierdan valores
                 break;
-            case "ldr":
-                int nuevo_valor = Memoria.hex2decimal(Memoria.Load_word((int) (inm + registro)));
-                String dato_decimal = Integer.toString(nuevo_valor);
-                BancoRegistros.setRegistro(Integer.parseInt(Rd.substring(1)), Long.parseLong(dato_decimal));
-                break;
-            case "strb":
-                Memoria.Store_byte((int) (inm + registro), dato_hexa);
-                break;
-            case "ldrb":
-                long nuevo_valor2 = Memoria.hex2decimal(Memoria.Load_byte((int) (inm + registro)));
-                String dato_decimal2 = Long.toString(nuevo_valor2);
-                BancoRegistros.setRegistro(Integer.parseInt(Rd.substring(1)), Long.parseLong(dato_decimal2));
-                break;
-        }*/
+          
+        }
     }
+     
+    
+     static int fromByteArray(byte[] bytes) {
+     return ByteBuffer.wrap(bytes).getInt();
+    }
+     
+    static byte[] toByteArray(int value) {
+    return new byte[] { 
+        (byte)(value >> 24),
+        (byte)(value >> 16),
+        (byte)(value >> 8),
+        (byte)value };
+}
+     
+     
      
      
      
