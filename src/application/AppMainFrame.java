@@ -8,6 +8,7 @@ package application;
 import arm.MemoryMap;
 import java.awt.Color;
 import java.io.File;
+import java.io.IOException;
 import static java.lang.Thread.sleep;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -52,8 +53,10 @@ public class AppMainFrame extends javax.swing.JFrame {
         //encryptedImage.setIcon(new ImageIcon(getClass().getResource("/application/images/firefox.jpg")));
         //desencryptedImage.setIcon(new ImageIcon(getClass().getResource("/application/images/firefox.jpg")));
     }
+    
+   
 
-    private void encryptFunction() {
+    private void encryptFunction() throws IOException {
 
         ImageProcessing process = new ImageProcessing();
 
@@ -94,8 +97,10 @@ public class AppMainFrame extends javax.swing.JFrame {
         }
         //encryptedImage.setIcon(new ImageIcon(getClass().getResource("/application/images/encrypted.jpg")));
     }
+    
+    
 
-    private void desencryptFunction() {
+    private void desencryptFunction() throws IOException {
         
         ImageProcessing process = new ImageProcessing();
 
@@ -538,8 +543,15 @@ public class AppMainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_selectImageBtnActionPerformed
 
     private void encryptBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_encryptBtnActionPerformed
-        // TODO add your handling code here:
-        encryptFunction();
+        try {
+            // TODO add your handling code here:
+            encryptFunction();
+            //buildImage();
+            //saveEncryptData();
+        } catch (IOException ex) {
+            Logger.getLogger(AppMainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }//GEN-LAST:event_encryptBtnActionPerformed
 
     private void desencryptBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_desencryptBtnActionPerformed
@@ -585,13 +597,23 @@ public class AppMainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_selectIamgeMenuActionPerformed
 
     private void encryptMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_encryptMenuActionPerformed
-        // TODO add your handling code here:
-        encryptFunction();
+        try {
+            // TODO add your handling code here:
+            encryptFunction();
+        } catch (IOException ex) {
+            Logger.getLogger(AppMainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_encryptMenuActionPerformed
 
     private void desencryptMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_desencryptMenuActionPerformed
-        // TODO add your handling code here:
-        desencryptFunction();
+        try {
+            // TODO add your handling code here:
+            
+            desencryptFunction();
+            
+        } catch (IOException ex) {
+            Logger.getLogger(AppMainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_desencryptMenuActionPerformed
 
     private void exitMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuActionPerformed
