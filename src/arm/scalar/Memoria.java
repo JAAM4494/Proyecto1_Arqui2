@@ -25,7 +25,7 @@ import javax.swing.JOptionPane;
 public class Memoria {
 
     static boolean bandera = true;
-    public static String Memoria_Ram[] = new String[256];
+    public static String Memoria_Ram[] = new String[66000];
     public static ArrayList<ArrayList<String>> bancoMemoria = new ArrayList<ArrayList<String>>();
 
     BancoRegistros bancoRegistros = new BancoRegistros();
@@ -192,7 +192,7 @@ public class Memoria {
     }
 
     public static void revisa_posicion(int posicion, int tipo) {
-        if (posicion < 1024 || posicion > 2048) {
+        if (posicion < 1024) {
             reporta_error(posicion);
             bandera = false;
         } else {

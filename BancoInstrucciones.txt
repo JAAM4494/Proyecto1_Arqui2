@@ -1,3 +1,6 @@
-movv v1,#-22
+movv v1,#76,#149,#29,#255
+movv v2,#55
+eorv v3, v1, v2 
+strv v3, [r0, #41020]
 
 ADD R0, R0, #0

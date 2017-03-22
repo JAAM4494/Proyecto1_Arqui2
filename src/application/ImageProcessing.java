@@ -51,25 +51,35 @@ public class ImageProcessing {
         initCodes();
     }
 
-    public void encryptImage(ArrayList<ArrayList<ColorModel>> pMatrix, String pAlgorithm, 
+    public void encryptImage(ArrayList<ArrayList<ColorModel>> pMatrix, String pAlgorithm,
             int pKey, int pShiftNumber, ColorModel pKeyVector) {
-        
+
         int heightSize = pMatrix.size();
         int widthSize = pMatrix.get(0).size();
         //int iterations = heightSize * widthSize;  
         //int temp = 0;
 
+        int memoryAdd = 1024;
+        try {
+            memoria.inicia_memoria();
+        } catch (IOException ex) {
+            Logger.getLogger(ImageProcessing.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         for (int i = 0; i < heightSize; i++) {
             for (int j = 0; j < widthSize; j++) {
                 ColorModel tempVector = pMatrix.get(i).get(j);
 
-                String tempInstr = "movv v1," + tempVector.getRedByte() + ","
-                        + tempVector.getGreenByte() + "," + tempVector.getBlueByte() + ","
-                        + tempVector.getAlphaByte();
+                String tempInstr = "movv v1,#" + tempVector.getRed() + ",#"
+                        + tempVector.getGreen() + ",#" + tempVector.getBlue() + ",#"
+                        + tempVector.getAlpha() + "\n";
 
                 switch (pAlgorithm) {
                     case "xor":
-                        sourceCode = tempInstr + xorCode + endLine;
+                        String tempInstr2 = "movv v2,#" + pKey + "\n";
+
+                        sourceCode = tempInstr + tempInstr2 + xorCode
+                                + "strv v3, [r0, #" + memoryAdd + "]" + endLine;
                         break;
                     case "shift-s":
                         sourceCode = tempInstr + sShiftCode + endLine;
@@ -83,13 +93,14 @@ public class ImageProcessing {
                 }
                 // next step, pass assembler code to the architecture
                 compileCode();
+                memoryAdd += 4;
             }
         }
     }
 
     public void desencryptImage(ArrayList<ArrayList<ColorModel>> pMatrix, String pAlgorithm,
             int pKey, int pShiftNumber, ColorModel pKeyVector) {
-        
+
         int heightSize = pMatrix.size();
         int widthSize = pMatrix.get(0).size();
         //int iterations = heightSize * widthSize;  
@@ -99,9 +110,9 @@ public class ImageProcessing {
             for (int j = 0; j < widthSize; j++) {
                 ColorModel tempVector = pMatrix.get(i).get(j);
 
-                String tempInstr = "movv v1," + tempVector.getRedByte() + ","
-                        + tempVector.getGreenByte() + "," + tempVector.getBlueByte() + ","
-                        + tempVector.getAlphaByte();
+                String tempInstr = "movv v1,#" + tempVector.getRed() + ",#"
+                        + tempVector.getGreen() + ",#" + tempVector.getBlueByte() + ",#"
+                        + tempVector.getAlpha();
 
                 switch (pAlgorithm) {
                     case "xor":
@@ -136,32 +147,29 @@ public class ImageProcessing {
         ArrayList<String> banderasString = bancoBanderas.obtenerBanderasIniciales();
         /////////
         ////////
+
+        Principal compilador = new Principal();
+        BancoInstrucciones bancoInstrucciones = new BancoInstrucciones();
+        ManejadorErrores moduloErrores = new ManejadorErrores();
+        ensamblador.borrarEnsamblaje();
+
+        System.out.println(sourceCode);
         try {
-            Principal compilador = new Principal();
-            BancoInstrucciones bancoInstrucciones = new BancoInstrucciones();
-            ManejadorErrores moduloErrores = new ManejadorErrores();
-            ensamblador.borrarEnsamblaje();
-            memoria.inicia_memoria();
-
-            System.out.println(sourceCode);
-            try {
-                compilador.principal(sourceCode);
-            } catch (IOException ex) {
-                System.out.println("Error, loading file");
-            }
-            //Borrar el contenido actual de las instrucciones, banderas, ensamblaje, memoria, branch y registros
-            bancoInstrucciones.borrarInstrucciones();
-            bancoBanderas.borrarBanderas();
-
-            bancoRegistros.borrarRegistros();
-            moduloErrores.borrarErrores();
-            bancoBranch.borrarBranch();
+            compilador.principal(sourceCode);
         } catch (IOException ex) {
-            Logger.getLogger(ImageProcessing.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Error, loading file");
         }
+        //Borrar el contenido actual de las instrucciones, banderas, ensamblaje, memoria, branch y registros
+        bancoInstrucciones.borrarInstrucciones();
+        bancoBanderas.borrarBanderas();
+
+        bancoRegistros.borrarRegistros();
+        moduloErrores.borrarErrores();
+        bancoBranch.borrarBranch();
+
     }
 
     private void initCodes() {
-
+        xorCode = "eorv v3, v1, v2 \n";
     }
 }

@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 
 /**
  * Main class
+ *
  * @author jaam
  */
 public class Main {
@@ -21,9 +22,13 @@ public class Main {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        
-        
-        
+
+        int i = 200;
+        byte b = (byte) i;
+        System.out.println(b); // -22
+        int i2 = b & 0xFF;
+        System.out.println(i2); // 234
+
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -58,13 +63,12 @@ public class Main {
                 }
             }
         });
-        
+
         // generateScanner();
         // generateParser();      
-       
     }
-    
-        // Metodo que genera el analizador lexico, usando jFlex
+
+    // Metodo que genera el analizador lexico, usando jFlex
     private static void generateScanner() {
         String path = "src/starkemulator/scanner.flex";
         File file = new File(path); // path -> donde se encuentra el archivo scanner.lex
@@ -90,5 +94,5 @@ public class Main {
             System.out.println(ex);
         }
     }
-    
+
 }

@@ -80,8 +80,6 @@ public class ALUVectorial {
 
     }
     
-    
-    
     public static void movvVectorial(String destino, String nombreOperando1, String nombreOperando2, String nombreOperando3,String nombreOperando4){
         
         byte[] resultado = new byte[4],operando2= new byte[4] ;
@@ -89,17 +87,11 @@ public class ALUVectorial {
         int tempOp2 = Integer.parseInt(nombreOperando2);
         int tempOp3 = Integer.parseInt(nombreOperando3);
         int tempOp4 = Integer.parseInt(nombreOperando4);
-
-        String binaryOp1= Integer.toBinaryString(tempOp1);
-        String binaryOp2= Integer.toBinaryString(tempOp2);
-        String binaryOp3= Integer.toBinaryString(tempOp3);
-        String binaryOp4= Integer.toBinaryString(tempOp4);
-
         
-        resultado[0]  = Byte.parseByte(binaryOp1, 2);
-        resultado[1]  = Byte.parseByte(binaryOp2, 2);
-        resultado[2]  = Byte.parseByte(binaryOp3, 2);
-        resultado[3]  = Byte.parseByte(binaryOp4, 2);  
+        resultado[0]  =(byte)tempOp1;
+        resultado[1]  = (byte)tempOp2;
+        resultado[2]  = (byte)tempOp3;
+        resultado[3]  = (byte)tempOp4; 
          
         
     //    System.out.println("Resultado!: "+  resultado[0]);
@@ -116,13 +108,13 @@ public class ALUVectorial {
     
     private static byte[] immMov(String nombreOperando2){
         byte[] operando2 = new byte[4];
-
+        System.out.println("nombre operando 2"+nombreOperando2);
         int tempOp2 = Integer.parseInt(nombreOperando2);
-         String binaryOp2= Integer.toBinaryString(tempOp2);
-         operando2[0]  = Byte.parseByte(binaryOp2, 2);
-         operando2[1]  = Byte.parseByte(binaryOp2, 2);
-         operando2[2]  = Byte.parseByte(binaryOp2, 2);
-         operando2[3]  = Byte.parseByte(binaryOp2, 2);  
+         
+         operando2[0]  = (byte) tempOp2;
+         operando2[1]  = (byte) tempOp2;
+         operando2[2]  = (byte) tempOp2;
+         operando2[3]  = (byte) tempOp2;
          return operando2;
     }
     

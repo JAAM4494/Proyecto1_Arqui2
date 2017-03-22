@@ -5,6 +5,7 @@
  */
 package application;
 
+import arm.MemoryMap;
 import java.awt.Color;
 import java.io.File;
 import static java.lang.Thread.sleep;
@@ -285,6 +286,7 @@ public class AppMainFrame extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Ubuntu", 0, 15)); // NOI18N
         jLabel2.setText("Set Private Key:");
 
+        privateKeyEntry.setText("000");
         privateKeyEntry.setToolTipText("Private Key");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -342,10 +344,18 @@ public class AppMainFrame extends javax.swing.JFrame {
 
         jLabel4.setText("Vector Key Values:");
 
+        redColorEntry.setText("000");
         redColorEntry.setToolTipText("Red Value");
+        redColorEntry.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                redColorEntryActionPerformed(evt);
+            }
+        });
 
+        greenColorEntry.setText("000");
         greenColorEntry.setToolTipText("Green Value");
 
+        blueColorEntry.setText("000");
         blueColorEntry.setToolTipText("Blue Value");
 
         jLabel7.setText("R:");
@@ -359,6 +369,7 @@ public class AppMainFrame extends javax.swing.JFrame {
 
         jLabel10.setText("A:");
 
+        alphaValueEntry.setText("000");
         alphaValueEntry.setToolTipText("Alpha Value");
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
@@ -533,7 +544,39 @@ public class AppMainFrame extends javax.swing.JFrame {
 
     private void desencryptBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_desencryptBtnActionPerformed
         // TODO add your handling code here:
-        desencryptFunction();
+        //desencryptFunction();
+                /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(AppMainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(AppMainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(AppMainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(AppMainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            MemoryMap window;
+
+            public void run() {
+                window = new MemoryMap();
+                window.setVisible(true);
+                window.updateMap();
+            }
+        });
     }//GEN-LAST:event_desencryptBtnActionPerformed
 
     private void selectIamgeMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectIamgeMenuActionPerformed
@@ -556,6 +599,10 @@ public class AppMainFrame extends javax.swing.JFrame {
         this.dispose();
         System.exit(0);
     }//GEN-LAST:event_exitMenuActionPerformed
+
+    private void redColorEntryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_redColorEntryActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_redColorEntryActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

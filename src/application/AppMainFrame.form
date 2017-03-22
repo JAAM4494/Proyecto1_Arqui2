@@ -289,6 +289,7 @@
         </Component>
         <Component class="javax.swing.JPasswordField" name="privateKeyEntry">
           <Properties>
+            <Property name="text" type="java.lang.String" value="000"/>
             <Property name="toolTipText" type="java.lang.String" value="Private Key"/>
           </Properties>
         </Component>
@@ -436,16 +437,22 @@
         </Component>
         <Component class="javax.swing.JPasswordField" name="redColorEntry">
           <Properties>
+            <Property name="text" type="java.lang.String" value="000"/>
             <Property name="toolTipText" type="java.lang.String" value="Red Value"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="redColorEntryActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JPasswordField" name="greenColorEntry">
           <Properties>
+            <Property name="text" type="java.lang.String" value="000"/>
             <Property name="toolTipText" type="java.lang.String" value="Green Value"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JPasswordField" name="blueColorEntry">
           <Properties>
+            <Property name="text" type="java.lang.String" value="000"/>
             <Property name="toolTipText" type="java.lang.String" value="Blue Value"/>
           </Properties>
         </Component>
@@ -479,6 +486,7 @@
         </Component>
         <Component class="javax.swing.JPasswordField" name="alphaValueEntry">
           <Properties>
+            <Property name="text" type="java.lang.String" value="000"/>
             <Property name="toolTipText" type="java.lang.String" value="Alpha Value"/>
           </Properties>
         </Component>
