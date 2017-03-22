@@ -11,6 +11,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 
 /**
@@ -38,6 +40,35 @@ public class ImageManager {
     
     public ArrayList<ArrayList<ColorModel>> getImageGrayPixels() {
         return grayPixels;
+    }
+    
+    public void buildImage(ArrayList<ArrayList<ColorModel>> pMatrix,String pName) {
+        
+        int limitOne = pMatrix.size();
+        int limitTwo = pMatrix.get(0).size();
+        
+         for (int i = 0; i < limitOne; i++) {
+            ArrayList<ColorModel> pixelLine = pMatrix.get(i);
+            for (int j = 0; j < limitTwo; j++) {
+                
+                    ColorModel temp = pixelLine.get(j);
+                    
+                    int avg = (temp.getRed() + temp.getGreen() + temp.getBlue()) / 3;
+                    
+                    //Color newColor = new Color(avg, avg, avg,temp.getAlpha());
+                    
+                    Color newColor = new Color(temp.getRed(), temp.getGreen(), temp.getBlue(),temp.getAlpha());
+
+                    image.setRGB(j, i, newColor.getRGB());
+            }
+        }
+         
+          File output = new File(parentPath + "/" + pName +".jpg");
+        try {
+            ImageIO.write(image, "jpg", output);
+        } catch (IOException ex) {
+            Logger.getLogger(ImageManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public ArrayList<ArrayList<ColorModel>> getImagePixels() throws IOException {
@@ -84,11 +115,13 @@ public class ImageManager {
                             red + green + blue, red + green + blue);
 
                     //image.setRGB(j, i, newColor.getRGB());
+                    
+                    int avg = red + green + blue;
 
                     ColorModel temp = new ColorModel();
-                    temp.setRed(red);
-                    temp.setGreen(green);
-                    temp.setBlue(blue);
+                    temp.setRed(avg);
+                    temp.setGreen(avg);
+                    temp.setBlue(avg);
                     temp.setAlpha(c.getAlpha());
                     pixelLine.add(temp);
                 }

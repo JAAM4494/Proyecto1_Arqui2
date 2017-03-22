@@ -18,6 +18,7 @@ import static arm.scalar.Memoria.Memoria_Ram;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,6 +36,8 @@ public class ImageProcessing {
     BancoBranch bancoBranch = new BancoBranch();
     Memoria memoria = new Memoria();
     public static ArrayList<ArrayList<ColorModel>> encryptedMatrix= new ArrayList<>();
+        public static ArrayList<ArrayList<ColorModel>> desencryptedMatrix= new ArrayList<>();
+
     ArrayList<ColorModel> tmpArrayList;
     
     private String sourceCode;
@@ -55,6 +58,14 @@ public class ImageProcessing {
     public ImageProcessing() {
         endLine = "\n" + "\n" + "ADD R0, R0, #0";
         initCodes();
+    }
+    
+    public ArrayList<ArrayList<ColorModel>> getEncryptedImageArray() {
+        return encryptedMatrix;
+    }
+    
+    public ArrayList<ArrayList<ColorModel>> getDesencryptedImageArray() {
+        return desencryptedMatrix;
     }
 
     public void encryptImage(ArrayList<ArrayList<ColorModel>> pMatrix, String pAlgorithm,
@@ -100,7 +111,7 @@ public class ImageProcessing {
                         break;
                 }
                 // next step, pass assembler code to the architecture
-                compileCode();
+                compileCode(0);
                 memoryAdd += 4;
                 posMem++;
 
@@ -113,6 +124,11 @@ public class ImageProcessing {
 
         int heightSize = pMatrix.size();
         int widthSize = pMatrix.get(0).size();
+        
+        int memoryAdd = 1024;
+        posMem = 0;
+        tmpArrayList= new ArrayList<>();
+        
         //int iterations = heightSize * widthSize;  
         //int temp = 0;
         for (int i = 0; i < heightSize; i++) {
@@ -121,11 +137,15 @@ public class ImageProcessing {
 
                 String tempInstr = "movv v1,#" + tempVector.getRed() + ",#"
                         + tempVector.getGreen() + ",#" + tempVector.getBlueByte() + ",#"
-                        + tempVector.getAlpha();
+                        + tempVector.getAlpha() +"\n";
 
                 switch (pAlgorithm) {
                     case "xor":
-                        sourceCode = tempInstr + xorCode + endLine;
+                        String tempInstr2 = "movv v2,#" + pKey + "\n";
+                        
+                        sourceCode = tempInstr + tempInstr2 + xorCode
+                                + "strv v3, [r0, #" + memoryAdd + "]" + endLine;
+                        
                         break;
                     case "shift-s":
                         sourceCode = tempInstr + sShiftCode + endLine;
@@ -138,12 +158,14 @@ public class ImageProcessing {
                         break;
                 }
                 // next step, pass assembler code to the architecture
-                compileCode();
+                compileCode(1);
+                memoryAdd += 4;
+                posMem++;
             }
         }
     }
 
-    private void compileCode() throws IOException {
+    private void compileCode(int pSelection) throws IOException {
         ////////
         //////// Architecture Initialization
         ////////
@@ -168,7 +190,14 @@ public class ImageProcessing {
         } catch (IOException ex) {
             System.out.println("Error, loading file");
         }
-        storeEncryptData();
+        
+        if(pSelection == 0) {
+            storeEncryptData();
+        }
+        else{
+            buildDesencryptedImage(Memoria_Ram[posMem]);
+        }
+        
         //Borrar el contenido actual de las instrucciones, banderas, ensamblaje, memoria, branch y registros
         bancoInstrucciones.borrarInstrucciones();
         bancoBanderas.borrarBanderas();
@@ -202,19 +231,59 @@ public class ImageProcessing {
     
     private void buildEncryptedImage(String pData){
         ColorModel tmp=new ColorModel();
-        int value = Integer.parseInt(pData, 16);  
-        byte[] pixel=toBytes(value);
+        
+        int temp = Integer.parseUnsignedInt(pData, 16); // hex to dec
+        //BigInteger bi = new BigInteger(pData, 16); // hex to bin
+        //String binVal = bi.toString(2);
+        // new BigInteger(binVal,2).toByteArray();
+        
+        byte[] pixel = toBytes(temp);
+                
+        
         
         tmp.setRed(pixel[0]& 0xFF);
         tmp.setGreen(pixel[1]& 0xFF);
         tmp.setBlue(pixel[2]& 0xFF);
         tmp.setAlpha(pixel[3]& 0xFF);
         
+        
+        
         tmpArrayList.add(tmp);
         if(posMem%100==0 && posMem!=0){ //Se completa la primera fila
             tmpArrayList.remove(tmp); //se debe eliminar el ultimo ya que 
                                         //sobrepasa 100 elementos
             encryptedMatrix.add(tmpArrayList); //Se agrega matriz principal
+            tmpArrayList=new ArrayList<>(); 
+            tmpArrayList.add(tmp);        
+        }
+        
+         
+    }
+    
+     private void buildDesencryptedImage(String pData){
+        ColorModel tmp=new ColorModel();
+        
+        int temp = Integer.parseUnsignedInt(pData, 16); // hex to dec
+        //BigInteger bi = new BigInteger(pData, 16); // hex to bin
+        //String binVal = bi.toString(2);
+        // new BigInteger(binVal,2).toByteArray();
+        
+        byte[] pixel = toBytes(temp);
+                
+        
+        
+        tmp.setRed(pixel[0]& 0xFF);
+        tmp.setGreen(pixel[1]& 0xFF);
+        tmp.setBlue(pixel[2]& 0xFF);
+        tmp.setAlpha(pixel[3]& 0xFF);
+        
+        
+        
+        tmpArrayList.add(tmp);
+        if(posMem%100==0 && posMem!=0){ //Se completa la primera fila
+            tmpArrayList.remove(tmp); //se debe eliminar el ultimo ya que 
+                                        //sobrepasa 100 elementos
+            desencryptedMatrix.add(tmpArrayList); //Se agrega matriz principal
             tmpArrayList=new ArrayList<>(); 
             tmpArrayList.add(tmp);        
         }

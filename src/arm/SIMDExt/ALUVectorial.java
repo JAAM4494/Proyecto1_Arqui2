@@ -171,7 +171,9 @@ public class ALUVectorial {
         
         int decimalData=fromByteArray(dato);
         
-        String dato_hexa = Long.toString(decimalData, 16); //decimal to Hex
+        String dato_hexa = Integer.toHexString(decimalData); //decimal to Hex
+        
+        //dato_hexa = dato_hexa.substring(decimalData, decimalData)
         
         registro = BancoRegistros.getRegistro(Integer.parseInt(Rn.substring(1)));
        

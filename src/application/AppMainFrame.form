@@ -17,6 +17,14 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="selectIamgeMenuActionPerformed"/>
               </Events>
             </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="viewMemoryMenu">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="View Memory"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="viewMemoryMenuActionPerformed"/>
+              </Events>
+            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="exitMenu">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Exit"/>
@@ -86,19 +94,27 @@
               <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Component id="jLabel12" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="displayEncrypted" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
+                      </Group>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
-                              <Component id="jLabel12" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="201" max="-2" attributes="0"/>
-                              <Component id="jLabel13" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jPanel3" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jPanel5" max="32767" attributes="0"/>
+                          </Group>
+                          <Group type="102" attributes="0">
+                              <EmptySpace min="-2" pref="126" max="-2" attributes="0"/>
+                              <Component id="jLabel13" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="displayDesencryptedBtn" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
@@ -124,11 +140,13 @@
                   <Component id="jPanel1" alignment="0" max="32767" attributes="0"/>
                   <Component id="jPanel3" alignment="0" max="32767" attributes="0"/>
               </Group>
-              <EmptySpace pref="25" max="32767" attributes="0"/>
+              <EmptySpace pref="14" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel12" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel11" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel13" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="displayEncrypted" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="displayDesencryptedBtn" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
@@ -521,6 +539,22 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Desencrypted:"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="displayEncrypted">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Display"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="displayEncryptedActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="displayDesencryptedBtn">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Display"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="displayDesencryptedBtnActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

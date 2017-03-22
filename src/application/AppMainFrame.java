@@ -21,6 +21,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import sun.dc.pr.PathStroker;
+import static java.lang.Thread.sleep;
 
 /**
  *
@@ -33,6 +35,8 @@ public class AppMainFrame extends javax.swing.JFrame {
     private String retornoArchivo;
 
     private ArrayList<ArrayList<ColorModel>> mainMatrix;
+    
+    private ImageManager manager;
 
     /**
      * Creates new form AppMainFrame
@@ -95,7 +99,7 @@ public class AppMainFrame extends javax.swing.JFrame {
                         Integer.parseInt(shiftSelection), keyVector);
                 break;
         }
-        //encryptedImage.setIcon(new ImageIcon(getClass().getResource("/application/images/encrypted.jpg")));
+        manager.buildImage(process.getEncryptedImageArray(),"encrypted");
     }
     
     
@@ -120,6 +124,14 @@ public class AppMainFrame extends javax.swing.JFrame {
         keyVector.setGreen(Integer.parseInt(greenColor));
         keyVector.setBlue(Integer.parseInt(blueColor));
         keyVector.setAlpha(Integer.parseInt(alphaColor));
+        
+        Path parent = pathDeArchivo.getParent();
+        String stringPath = parent.toString() + "/encrypted.jpg";
+        System.out.println("stringPath:"+stringPath);
+        Path encryptedPath = Paths.get(stringPath);
+        
+        manager = new ImageManager(encryptedPath);
+        mainMatrix = manager.getImagePixels();
 
         switch (index) {
             case 0:
@@ -139,7 +151,7 @@ public class AppMainFrame extends javax.swing.JFrame {
                         Integer.parseInt(shiftSelection), keyVector);
                 break;
         }
-        //desencryptedImage.setIcon(new ImageIcon(getClass().getResource("/application/images/desencrypted.jpg")));
+        manager.buildImage(process.getDesencryptedImageArray(),"desencrypted");
     }
 
     private void openImages() {
@@ -155,11 +167,17 @@ public class AppMainFrame extends javax.swing.JFrame {
             //
             pathRelativo = "/" + pathDeArchivo.getParent().getParent().getFileName()
                     + "/" + pathDeArchivo.getParent().getFileName() + "/" + pathDeArchivo.getFileName();
+            
+            System.out.println("relativo: "+pathRelativo);
+            System.out.println("pathArchivo1: "+pathDeArchivo.getParent().getParent().getFileName());
+            System.out.println("pathArchivo2: "+pathDeArchivo.getParent().getFileName());
+            System.out.println("fileName: "+pathDeArchivo.getFileName());
+            
 
             originalImage.setIcon(new ImageIcon(getClass().getResource(pathRelativo)));
 
             // pass image to grayScale and set matrix
-            ImageManager manager = new ImageManager(pathDeArchivo);
+            manager = new ImageManager(pathDeArchivo);
             manager.imageToGrayScale();
             mainMatrix = manager.getImageGrayPixels();
 
@@ -209,9 +227,12 @@ public class AppMainFrame extends javax.swing.JFrame {
         desencryptedImage = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
+        displayEncrypted = new javax.swing.JButton();
+        displayDesencryptedBtn = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         selectIamgeMenu = new javax.swing.JMenuItem();
+        viewMemoryMenu = new javax.swing.JMenuItem();
         exitMenu = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         encryptMenu = new javax.swing.JMenuItem();
@@ -437,6 +458,20 @@ public class AppMainFrame extends javax.swing.JFrame {
         jLabel13.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
         jLabel13.setText("Desencrypted:");
 
+        displayEncrypted.setText("Display");
+        displayEncrypted.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                displayEncryptedActionPerformed(evt);
+            }
+        });
+
+        displayDesencryptedBtn.setText("Display");
+        displayDesencryptedBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                displayDesencryptedBtnActionPerformed(evt);
+            }
+        });
+
         jMenu1.setText("File");
 
         selectIamgeMenu.setText("Select Image");
@@ -446,6 +481,14 @@ public class AppMainFrame extends javax.swing.JFrame {
             }
         });
         jMenu1.add(selectIamgeMenu);
+
+        viewMemoryMenu.setText("View Memory");
+        viewMemoryMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viewMemoryMenuActionPerformed(evt);
+            }
+        });
+        jMenu1.add(viewMemoryMenu);
 
         exitMenu.setText("Exit");
         exitMenu.addActionListener(new java.awt.event.ActionListener() {
@@ -492,18 +535,24 @@ public class AppMainFrame extends javax.swing.JFrame {
                 .addGap(6, 6, 6)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel12)
-                                .addGap(201, 201, 201)
-                                .addComponent(jLabel13)
-                                .addGap(0, 0, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(displayEncrypted))
+                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(126, 126, 126)
+                                .addComponent(jLabel13)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(displayDesencryptedBtn)
+                                .addGap(0, 0, Short.MAX_VALUE)))
                         .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
                         .addGap(19, 19, 19)
@@ -521,11 +570,13 @@ public class AppMainFrame extends javax.swing.JFrame {
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12)
                     .addComponent(jLabel11)
-                    .addComponent(jLabel13))
+                    .addComponent(jLabel13)
+                    .addComponent(displayEncrypted)
+                    .addComponent(displayDesencryptedBtn))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(encryptedImage, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -555,40 +606,12 @@ public class AppMainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_encryptBtnActionPerformed
 
     private void desencryptBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_desencryptBtnActionPerformed
-        // TODO add your handling code here:
-        //desencryptFunction();
-                /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AppMainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AppMainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AppMainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AppMainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            // TODO add your handling code here:
+            desencryptFunction();
+        } catch (IOException ex) {
+            Logger.getLogger(AppMainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            MemoryMap window;
-
-            public void run() {
-                window = new MemoryMap();
-                window.setVisible(true);
-                window.updateMap();
-            }
-        });
     }//GEN-LAST:event_desencryptBtnActionPerformed
 
     private void selectIamgeMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectIamgeMenuActionPerformed
@@ -626,6 +649,58 @@ public class AppMainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_redColorEntryActionPerformed
 
+    private void displayEncryptedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_displayEncryptedActionPerformed
+        // TODO add your handling code here:
+        pathRelativo = "/" + pathDeArchivo.getParent().getParent().getFileName()
+                    + "/" + pathDeArchivo.getParent().getFileName() + "/encrypted.jpg";
+        
+        encryptedImage.setIcon(new ImageIcon(getClass().getResource(pathRelativo)));
+    }//GEN-LAST:event_displayEncryptedActionPerformed
+
+    private void displayDesencryptedBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_displayDesencryptedBtnActionPerformed
+        // TODO add your handling code here:
+        pathRelativo = "/" + pathDeArchivo.getParent().getParent().getFileName()
+                    + "/" + pathDeArchivo.getParent().getFileName() + "/desencrypted.jpg";
+        
+        desencryptedImage.setIcon(new ImageIcon(getClass().getResource(pathRelativo)));
+    }//GEN-LAST:event_displayDesencryptedBtnActionPerformed
+
+    private void viewMemoryMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewMemoryMenuActionPerformed
+        // TODO add your handling code here:
+                        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(AppMainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(AppMainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(AppMainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(AppMainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            MemoryMap window;
+
+            public void run() {
+                window = new MemoryMap();
+                window.setVisible(true);
+                window.updateMap();
+            }
+        });
+    }//GEN-LAST:event_viewMemoryMenuActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> algorithmsBox;
@@ -634,6 +709,8 @@ public class AppMainFrame extends javax.swing.JFrame {
     private javax.swing.JButton desencryptBtn;
     private javax.swing.JMenuItem desencryptMenu;
     private javax.swing.JLabel desencryptedImage;
+    private javax.swing.JButton displayDesencryptedBtn;
+    private javax.swing.JButton displayEncrypted;
     private javax.swing.JButton encryptBtn;
     private javax.swing.JMenuItem encryptMenu;
     private javax.swing.JLabel encryptedImage;
@@ -666,5 +743,6 @@ public class AppMainFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem selectIamgeMenu;
     private javax.swing.JButton selectImageBtn;
     private javax.swing.JComboBox<String> shiftNumberBox;
+    private javax.swing.JMenuItem viewMemoryMenu;
     // End of variables declaration//GEN-END:variables
 }

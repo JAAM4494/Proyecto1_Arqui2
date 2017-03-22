@@ -1,6 +1,6 @@
-movv v1,#5,#88,#23,#255
-movv v2,#55
+movv v1,#255,#255,#-1,#255
+movv v2,#100
 eorv v3, v1, v2 
-strv v3, [r0, #10476]
+strv v3, [r0, #41020]
 
 ADD R0, R0, #0
