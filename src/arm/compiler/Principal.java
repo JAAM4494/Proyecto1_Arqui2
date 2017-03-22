@@ -50,7 +50,7 @@ public class Principal {
             //Se inicia la simulacion
             simulacion.principal(instrucciones);
             //Se inicia el ensamblaje
-           // decodificacion.inicio(instrucciones);
+            decodificacion.inicio(instrucciones);
             //memoria.imprimirMemoria();
             }else
                 JOptionPane.showMessageDialog(new JFrame(), "La cantidad de instrucciones ingresadas sobrepasa el tamaño de la memoria de instrucciones", 

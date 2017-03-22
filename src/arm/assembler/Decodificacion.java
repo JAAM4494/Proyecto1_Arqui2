@@ -53,15 +53,26 @@ public class Decodificacion {
     public void decodificar(List lista) throws IOException {
         Deco_Codigo_Instruccion cod_inst = new Deco_Codigo_Instruccion();
         BancoBranch bancobranch = new BancoBranch();
-
+        boolean flagVectorial;
         if (lista.size() > 0) {
             String inst = (String) lista.get(0);
             cod_inst.cmd_inst(inst);
             op = cod_inst.getOp();
             cmd = cod_inst.getCmd();
             cond = cod_inst.getcond();
+            flagVectorial=cod_inst.getFlagVectorial();
+            
+            if(flagVectorial==true){
+                Rd = cod_inst.numero_vector((String) lista.get(1));
+                Rn = cod_inst.numero_vector((String) lista.get(2));
 
-            if (lista.size() == 1) { // Caso de que sea un label
+                System.out.println("VOp1: "+Rn);
+
+
+                
+                
+            }
+            else if (lista.size() == 1) { // Caso de que sea un label
                 inst_hexa = "00000000";
                 Modificar(inst_hexa, contador_instrucciones);
             } else if (lista.size() == 2) { // Caso de que branch 
@@ -80,7 +91,8 @@ public class Decodificacion {
                 Modificar(instruccion_Comp, contador_instrucciones);
                 contador_instrucciones += 1;
                 direccion += 4;
-            } else { // Demas instrucciones
+            } 
+            else { // Demas instrucciones
                 Rd = cod_inst.numero_registro((String) lista.get(1));
                 Rn = cod_inst.numero_registro((String) lista.get(2));
                 S = "0"; // Considerando que no hay banderas, sino este si cambia
@@ -240,14 +252,19 @@ public class Decodificacion {
         String dir_hexa = extension_signo(Integer.toHexString(direccion), 8);
         String dato = "Memory Address: " + dir_hexa.toUpperCase() + "             " + "Instruction: " + pos + "  " + instruccion.toUpperCase();
         instruccionesString = instruccionesString + "\n" + dato;
-
+        boolean flag;
+        if(dir_hexa.equals("00000000")){
+                flag=false; } else{ flag=true;  }
         FileWriter fichero = null;
         PrintWriter pw = null;
+        
         try {
-            fichero = new FileWriter("out.txt", false);
-            pw = new PrintWriter(fichero, false);
+            fichero = new FileWriter("Codigo Maquina.txt", flag);
+            pw = new PrintWriter(fichero, flag);
+            //pw.println(dato);
+            System.out.println("Generacion codigo maquina\n"+dato);
+            
             pw.println(dato);
-            pw.flush();
             pw.close();
             fichero.close();
         } catch (Exception e) {
