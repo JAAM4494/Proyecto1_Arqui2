@@ -146,13 +146,13 @@ public class ImageProcessing {
                             sourceCode = tempInstr + "lsl r5, r1,#" + pShiftNumber + "\n"
                                     + "str r5, [r0, #" + memoryAdd + "]";
                             memoryAdd += 4;
-                            sourceCode = sourceCode + "lsl r6, r1,#" + pShiftNumber + "\n"
+                            sourceCode = sourceCode + "lsl r6, r2,#" + pShiftNumber + "\n"
                                     + "str r6, [r0, #" + memoryAdd + "]";
                             memoryAdd += 4;
-                            sourceCode = sourceCode + "lsl r7, r1,#" + pShiftNumber + "\n"
+                            sourceCode = sourceCode + "lsl r7, r3,#" + pShiftNumber + "\n"
                                     + "str r7, [r0, #" + memoryAdd + "]";
                             memoryAdd += 4;
-                            sourceCode = sourceCode + "lsl r8, r1,#" + pShiftNumber + "\n"
+                            sourceCode = sourceCode + "lsl r8, r4,#" + pShiftNumber + "\n"
                                     + "str r8, [r0, #" + memoryAdd + "]" + endLine;
                             memoryAdd += 4;
                         } else {
@@ -183,6 +183,24 @@ public class ImageProcessing {
                                     + "mov r2,#" + tempVector.getGreen() + "\n" 
                                     + "mov r3,#" + tempVector.getBlue() + "\n"
                                     + "mov r4,#" + tempVector.getAlpha() + "\n";
+                            
+                            String tempInstr5 = "mov r5,#" + pKeyVector.getRed() + "\n"
+                                    + "mov r6,#" + pKeyVector.getGreen() + "\n"
+                                    + "mov r7,#" + pKeyVector.getBlue() + "\n"
+                                    + "mov r8,#" + pKeyVector.getAlpha() + "\n";
+                            
+                            sourceCode = tempInstr + tempInstr5 + addCodeScalar
+                                    + "str r9, [r0, #" + memoryAdd + "]";
+                            memoryAdd += 4;
+                            sourceCode = sourceCode
+                                    + "str r10, [r0, #" + memoryAdd + "]";
+                            memoryAdd += 4;
+                            sourceCode = sourceCode
+                                    + "str r11, [r0, #" + memoryAdd + "]";
+                            memoryAdd += 4;
+                            sourceCode = sourceCode
+                                    + "str r12, [r0, #" + memoryAdd + "]" + endLine;
+                            memoryAdd += 4;
                         } else {
                             String tempInstr5 = "movv v2,#" + pKeyVector.getRed()
                                     + ",#" + pKeyVector.getGreen() + ",#" + pKeyVector.getBlue()
@@ -240,6 +258,21 @@ public class ImageProcessing {
                                     + "mov r2,#" + tempVector.getGreen() + "\n" 
                                     + "mov r3,#" + tempVector.getBlue() + "\n"
                                     + "mov r4,#" + tempVector.getAlpha() + "\n";
+                            
+                            String tempInstr2 = "mov r5,#" + pKey + "\n";
+                            
+                            sourceCode = tempInstr + tempInstr2 + xorCodeScalar
+                                    + "str r6, [r0, #" + memoryAdd + "]";
+                            memoryAdd += 4;
+                            sourceCode = sourceCode
+                                    + "str r7, [r0, #" + memoryAdd + "]";
+                            memoryAdd += 4;
+                            sourceCode = sourceCode
+                                    + "str r8, [r0, #" + memoryAdd + "]";
+                            memoryAdd += 4;
+                            sourceCode = sourceCode
+                                    + "str r9, [r0, #" + memoryAdd + "]" + endLine;
+                            memoryAdd += 4;
                         } else {
                             String tempInstr2 = "movv v2,#" + pKey + "\n";
 
@@ -254,6 +287,19 @@ public class ImageProcessing {
                                     + "mov r2,#" + tempVector.getGreen() + "\n" 
                                     + "mov r3,#" + tempVector.getBlue() + "\n"
                                     + "mov r4,#" + tempVector.getAlpha() + "\n";
+                            
+                            sourceCode = tempInstr + "lsr r5, r1,#" + pShiftNumber + "\n"
+                                    + "str r5, [r0, #" + memoryAdd + "]";
+                            memoryAdd += 4;
+                            sourceCode = sourceCode + "lsr r6, r2,#" + pShiftNumber + "\n"
+                                    + "str r6, [r0, #" + memoryAdd + "]";
+                            memoryAdd += 4;
+                            sourceCode = sourceCode + "lsr r7, r3,#" + pShiftNumber + "\n"
+                                    + "str r7, [r0, #" + memoryAdd + "]";
+                            memoryAdd += 4;
+                            sourceCode = sourceCode + "lsr r8, r4,#" + pShiftNumber + "\n"
+                                    + "str r8, [r0, #" + memoryAdd + "]" + endLine;
+                            memoryAdd += 4;
                         } else {
                             //String tempInstr3 = "movv v2,#" + pShiftNumber + "\n";
 
@@ -282,6 +328,24 @@ public class ImageProcessing {
                                     + "mov r2,#" + tempVector.getGreen() + "\n" 
                                     + "mov r3,#" + tempVector.getBlue() + "\n"
                                     + "mov r4,#" + tempVector.getAlpha() + "\n";
+                            
+                            String tempInstr5 = "mov r5,#" + pKeyVector.getRed() + "\n"
+                                    + "mov r6,#" + pKeyVector.getGreen() + "\n"
+                                    + "mov r7,#" + pKeyVector.getBlue() + "\n"
+                                    + "mov r8,#" + pKeyVector.getAlpha() + "\n";
+                            
+                            sourceCode = tempInstr + tempInstr5 + addDesencryptCodeScalar
+                                    + "str r9, [r0, #" + memoryAdd + "]";
+                            memoryAdd += 4;
+                            sourceCode = sourceCode
+                                    + "str r10, [r0, #" + memoryAdd + "]";
+                            memoryAdd += 4;
+                            sourceCode = sourceCode
+                                    + "str r11, [r0, #" + memoryAdd + "]";
+                            memoryAdd += 4;
+                            sourceCode = sourceCode
+                                    + "str r12, [r0, #" + memoryAdd + "]" + endLine;
+                            memoryAdd += 4;
                         } else {
                             String tempInstr5 = "movv v2,#" + pKeyVector.getRed()
                                     + ",#" + pKeyVector.getGreen() + ",#" + pKeyVector.getBlue()
@@ -295,7 +359,9 @@ public class ImageProcessing {
                 }
                 // next step, pass assembler code to the architecture
                 compileCode(1);
-                memoryAdd += 4;
+                if(pSacalar != 0) {
+                    memoryAdd += 4;
+                }
                 posMem += 1;
             }
         }
