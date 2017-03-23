@@ -1128,15 +1128,15 @@ public class MainFrame extends javax.swing.JFrame {
                 int length = end - start;
                 source = child.getDocument().getText(start, length);
                 
-                if(source == "") {
+               /* if(source.equals("\n")) {
                     stepIndex +=1;
                     child = root.getElement(stepIndex);
                     source = child.getDocument().getText(start, length);
-                }
+                }*/
                 
                 limit = root.getElementCount();
 
-                System.out.println("Source:"+source);
+                System.out.println("Source:"+source+"*--");
                 
             }
 
