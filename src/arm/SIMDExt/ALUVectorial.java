@@ -135,7 +135,7 @@ public class ALUVectorial {
         resultado[0]= (byte)(((operando1[0] & 0xff)  >>> operando2[0]) | ((operando1[0] & 0xff) << (8 - operando2[0])));        
         resultado[1]= (byte)(((operando1[1] & 0xff)  >>> operando2[1]) | ((operando1[1] & 0xff) << (8 - operando2[1])));        
         resultado[2]= (byte)(((operando1[2] & 0xff)  >>> operando2[2]) | ((operando1[2] & 0xff) << (8 - operando2[2])));        
-        resultado[3]= (byte)(((operando1[3] & 0xff)  >>> operando2[2]) | ((operando1[2] & 0xff) << (8 - operando2[2])));        
+        resultado[3]= (byte)(((operando1[3] & 0xff)  >>> operando2[3]) | ((operando1[3] & 0xff) << (8 - operando2[3])));        
         BancoVectores.setVector(Integer.parseInt(Rd.substring(1)), resultado);
 
     }
@@ -169,9 +169,10 @@ public class ALUVectorial {
         dato = BancoVectores.getVector(Integer.parseInt(Rd.substring(1)));
         
         
-        int decimalData=fromByteArray(dato);
+        int decimalData= fromByteArray(dato);
         
         String dato_hexa = Integer.toHexString(decimalData); //decimal to Hex
+        
         
         //dato_hexa = dato_hexa.substring(decimalData, decimalData)
         
@@ -192,7 +193,6 @@ public class ALUVectorial {
                 byte[] vector=toByteArray(nuevo_valor);
                 BancoVectores.setVector(Integer.parseInt(Rd.substring(1)),vector );                break;
                 
-          
         }
     }
      

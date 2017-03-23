@@ -35,6 +35,8 @@ import arm.scalar.BancoBanderas;
 import arm.scalar.BancoBranch;
 import arm.scalar.BancoRegistros;
 import arm.scalar.Memoria;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Element;
 
 public class MainFrame extends javax.swing.JFrame {
 
@@ -1085,9 +1087,102 @@ public class MainFrame extends javax.swing.JFrame {
             r0Tv.setText("0");
         }
     }
+    
+    private int stepIndex = -1;
+    int limit = 5;
+    
+    Principal compiladorStep = new Principal();
+            BancoInstrucciones bancoInstruccionesStep = new BancoInstrucciones();
+            ManejadorErrores moduloErroresStep = new ManejadorErrores();
 
     private void runStepScript() {
-        System.out.println("Missing!!!");
+        //System.out.println("Missing!!!");
+        this.stepFlag = true;
+        stepIndex += 1;
+        
+    try {
+        if(stepIndex < limit) {
+            
+            
+            if(stepIndex == 0) {
+                ensamblador.borrarEnsamblaje();
+                memoria.inicia_memoria();
+            }
+            
+            //bancoBranch.borrarBranch();
+
+            String source = "";
+            JTextPane tempPane = null;
+            int textPaneSelected = jTabbedPane1.getSelectedIndex();
+
+            if (textPaneSelected != -1) {
+                tempPane = paneList.get(textPaneSelected);
+            }
+
+            if (tempPane != null) {
+                Element root = tempPane.getDocument().getDefaultRootElement();
+                Element child = root.getElement(stepIndex);
+                
+                int start = child.getStartOffset();
+                int end = child.getEndOffset();
+                int length = end - start;
+                source = child.getDocument().getText(start, length);
+                
+                if(source == "") {
+                    stepIndex +=1;
+                    child = root.getElement(stepIndex);
+                    source = child.getDocument().getText(start, length);
+                }
+                
+                limit = root.getElementCount();
+
+                System.out.println("Source:"+source);
+                
+            }
+
+            String instruccionesString = source + "\n" + "\n" + "ADD R0, R0, #0";
+            //System.out.println(instruccionesString);
+            try {
+                compiladorStep.principal(instruccionesString);
+            } catch (IOException ex) {
+                System.out.println("Error en el boton");
+            }
+            String vectorsText = "Vectors" + "\n";
+            vectorsText += bancoVectores.obtenerVectores();
+            jLabel24.setText("<html>" + vectorsText.replaceAll("\n", "<br/>") + "</html>");
+
+            //Impresion de los registros en pantalla
+            ArrayList<Long> registros = new ArrayList<>();
+            try {
+                registros = bancoRegistros.obtenerRegistros();
+            } catch (IOException ex) {
+                System.out.println("Error obteniendo los registros a imprimir");
+            }
+            updateRegisters(registros);
+
+            //Impresion de las banderas en pantalla
+            ArrayList<String> banderasString = bancoBanderas.obtenerBanderas();
+            setFlags(banderasString);
+
+            //Hacer el aproximado de ejecucion
+            int cantidadInstrucciones = bancoInstruccionesStep.cantidadInstrucciones();
+            double tiempoEjecucion = 0.01 * cantidadInstrucciones;
+            String tiempoEjecucionString = tiempoEjecucion + " ms";
+            exeTimeTv.setText(tiempoEjecucionString);
+
+            //Borrar el contenido actual de las instrucciones, banderas, ensamblaje, memoria, branch y registros
+         //   bancoInstrucciones.borrarInstrucciones();
+         //   bancoBanderas.borrarBanderas();
+
+           // bancoRegistros.borrarRegistros();
+           // moduloErrores.borrarErrores();
+          //  bancoBranch.borrarBranch();
+        }
+        } catch (IOException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (BadLocationException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private void runScript() {

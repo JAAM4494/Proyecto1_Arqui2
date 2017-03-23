@@ -21,7 +21,6 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import sun.dc.pr.PathStroker;
 import static java.lang.Thread.sleep;
 
 /**
@@ -57,7 +56,6 @@ public class AppMainFrame extends javax.swing.JFrame {
         //encryptedImage.setIcon(new ImageIcon(getClass().getResource("/application/images/firefox.jpg")));
         //desencryptedImage.setIcon(new ImageIcon(getClass().getResource("/application/images/firefox.jpg")));
     }
-    
    
 
     private void encryptFunction() throws IOException {
@@ -608,6 +606,12 @@ public class AppMainFrame extends javax.swing.JFrame {
     private void desencryptBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_desencryptBtnActionPerformed
         try {
             // TODO add your handling code here:
+            System.out.println("///////////////////////////////////////////////////////"
+                    + "\n ///////////////////////////////////////////////////////////////"
+                    + "\n ///////////////////////////////////////////////////////////////"
+                    + "\n ///////////////////////////////////////////////////////////////"
+                    + "\n ///////////////////////////////////////////////////////////////"
+                    + "\n ////////////////////////////////////////////////////////////////");
             desencryptFunction();
         } catch (IOException ex) {
             Logger.getLogger(AppMainFrame.class.getName()).log(Level.SEVERE, null, ex);

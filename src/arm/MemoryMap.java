@@ -9,6 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 import arm.scalar.Memoria;
+import static arm.scalar.Memoria.Memoria_Ram;
 import java.util.ArrayList;
 
 /**
@@ -35,6 +36,12 @@ public class MemoryMap extends javax.swing.JFrame {
     public void updateMap() {
         
         ArrayList<ArrayList<String>> memArray = memoria.getMemoriaString();
+        
+        /*
+        for (int i = 0; i < Memoria.Memoria_Ram.length; i++) {
+            System.out.println(Memoria.Memoria_Ram[i]);
+        }
+        */
     
         //byte [] storage = Memory.getMemory();
         DefaultTableModel newModel = new DefaultTableModel();
