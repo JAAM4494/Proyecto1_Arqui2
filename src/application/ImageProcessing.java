@@ -488,6 +488,8 @@ public class ImageProcessing {
         tmp.setGreen(pixel[1] & 0xFF);
         tmp.setBlue(pixel[2] & 0xFF);
         tmp.setAlpha(pixel[3] & 0xFF);
+        
+        tmpArrayList.add(tmp);
 
         if (counter == 99) {
             desencryptedMatrix.add(tmpArrayList);
