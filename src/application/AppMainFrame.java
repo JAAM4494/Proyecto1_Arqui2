@@ -130,8 +130,9 @@ public class AppMainFrame extends javax.swing.JFrame {
         System.out.println("stringPath:"+stringPath);
         Path encryptedPath = Paths.get(stringPath);
         
-        manager = new ImageManager(encryptedPath);
-        mainMatrix = manager.getImagePixels();
+        ImageManager manager2 = new ImageManager(encryptedPath);
+        //manager = new ImageManager(encryptedPath);
+        mainMatrix = manager2.getImagePixels();
         
         int indexArchType = archTypeBox.getSelectedIndex();
 
@@ -153,7 +154,11 @@ public class AppMainFrame extends javax.swing.JFrame {
                         Integer.parseInt(shiftSelection), keyVector);
                 break;
         }
-        manager.buildImage(process.getDesencryptedImageArray(),"desencrypted");
+        if(index == 2) {
+            manager.buildImage(manager.getImageGrayPixels(),"desencrypted");
+        } else {
+            manager2.buildImage(process.getDesencryptedImageArray(),"desencrypted");
+        }
     }
 
     private void openImages() {

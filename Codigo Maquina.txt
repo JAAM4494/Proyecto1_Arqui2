@@ -1,5 +1,3 @@
-Memory Address: 00000000             Instruction: 0            140FFFFFFFF
-Memory Address: 00000004             Instruction: 0  A8880005
-Memory Address: 00000008             Instruction: 0  B0880003
-Memory Address: 0000000C             Instruction: 0  C8082000
-Memory Address: 00000010             Instruction: 0  D0882020
+Memory Address: 00000000             Instruction: 0            141F7F7F7FF
+Memory Address: 00000004             Instruction: 0  B9880003
+Memory Address: 00000008             Instruction: 0  C98501E0
