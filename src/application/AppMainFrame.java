@@ -78,22 +78,24 @@ public class AppMainFrame extends javax.swing.JFrame {
         keyVector.setGreen(Integer.parseInt(greenColor));
         keyVector.setBlue(Integer.parseInt(blueColor));
         keyVector.setAlpha(Integer.parseInt(alphaColor));
+        
+        int indexArchType = archTypeBox.getSelectedIndex();
 
         switch (index) {
             case 0:
-                process.encryptImage(mainMatrix, "xor", Integer.parseInt(key),
+                process.encryptImage(mainMatrix, "xor",indexArchType, Integer.parseInt(key),
                         Integer.parseInt(shiftSelection), keyVector);
                 break;
             case 1:
-                process.encryptImage(mainMatrix, "shift-s", Integer.parseInt(key),
+                process.encryptImage(mainMatrix, "shift-s",indexArchType, Integer.parseInt(key),
                         Integer.parseInt(shiftSelection), keyVector);
                 break;
             case 2:
-                process.encryptImage(mainMatrix, "shift-c", Integer.parseInt(key),
+                process.encryptImage(mainMatrix, "shift-c",indexArchType, Integer.parseInt(key),
                         Integer.parseInt(shiftSelection), keyVector);
                 break;
             default:
-                process.encryptImage(mainMatrix, "add", Integer.parseInt(key),
+                process.encryptImage(mainMatrix, "add",indexArchType, Integer.parseInt(key),
                         Integer.parseInt(shiftSelection), keyVector);
                 break;
         }
@@ -130,22 +132,24 @@ public class AppMainFrame extends javax.swing.JFrame {
         
         manager = new ImageManager(encryptedPath);
         mainMatrix = manager.getImagePixels();
+        
+        int indexArchType = archTypeBox.getSelectedIndex();
 
         switch (index) {
             case 0:
-                process.desencryptImage(mainMatrix, "xor", Integer.parseInt(key),
+                process.desencryptImage(mainMatrix, "xor",indexArchType, Integer.parseInt(key),
                         Integer.parseInt(shiftSelection), keyVector);
                 break;
             case 1:
-                process.desencryptImage(mainMatrix, "shift-s", Integer.parseInt(key),
+                process.desencryptImage(mainMatrix, "shift-s",indexArchType, Integer.parseInt(key),
                         Integer.parseInt(shiftSelection), keyVector);
                 break;
             case 2:
-                process.desencryptImage(mainMatrix, "shift-c", Integer.parseInt(key),
+                process.desencryptImage(mainMatrix, "shift-c",indexArchType, Integer.parseInt(key),
                         Integer.parseInt(shiftSelection), keyVector);
                 break;
             default:
-                process.desencryptImage(mainMatrix, "add", Integer.parseInt(key),
+                process.desencryptImage(mainMatrix, "add",indexArchType, Integer.parseInt(key),
                         Integer.parseInt(shiftSelection), keyVector);
                 break;
         }
@@ -200,6 +204,7 @@ public class AppMainFrame extends javax.swing.JFrame {
         encryptBtn = new javax.swing.JButton();
         algorithmsBox = new javax.swing.JComboBox<>();
         jLabel14 = new javax.swing.JLabel();
+        archTypeBox = new javax.swing.JComboBox<>();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -268,6 +273,9 @@ public class AppMainFrame extends javax.swing.JFrame {
         jLabel14.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
         jLabel14.setText("Setup");
 
+        archTypeBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Scalar", "SIMD Ext." }));
+        archTypeBox.setToolTipText("Scalar/SIMD");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -276,32 +284,36 @@ public class AppMainFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(encryptBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(desencryptBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(desencryptBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(encryptBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(archTypeBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel14)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(selectImageBtn)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(algorithmsBox, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel14))
+                                .addComponent(algorithmsBox, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE)))
-                .addGap(0, 9, Short.MAX_VALUE))
+                .addGap(12, 12, 12))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jLabel14)
-                .addGap(37, 37, 37)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(algorithmsBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(selectImageBtn))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(selectImageBtn)
+                    .addComponent(algorithmsBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(encryptBtn)
-                    .addComponent(desencryptBtn))
-                .addGap(43, 43, 43))
+                    .addComponent(archTypeBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(desencryptBtn)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jLabel1.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
@@ -709,6 +721,7 @@ public class AppMainFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> algorithmsBox;
     private javax.swing.JPasswordField alphaValueEntry;
+    private javax.swing.JComboBox<String> archTypeBox;
     private javax.swing.JPasswordField blueColorEntry;
     private javax.swing.JButton desencryptBtn;
     private javax.swing.JMenuItem desencryptMenu;
