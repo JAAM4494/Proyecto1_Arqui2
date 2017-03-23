@@ -1,4 +1,7 @@
-
-
+movv v0,#-1,#-1,#-1,#-1
+lslv v1,v1,#5
+lsrv v1,v1,#3
+strv v0,[r1,#1024]
+ldrv v1,[r1,#1028]
 
 ADD R0, R0, #0

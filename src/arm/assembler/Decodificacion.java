@@ -10,6 +10,7 @@ import arm.scalar.BancoBranch;
 import arm.scalar.BancoRegistros;
 import arm.compiler.BancoInstrucciones;
 import arm.compiler.ManejadorErrores;
+import arm.help.Converter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import sun.awt.X11.XConstants;
 
 /**
  *
@@ -63,13 +65,29 @@ public class Decodificacion {
             flagVectorial=cod_inst.getFlagVectorial();
             
             if(flagVectorial==true){
-                Rd = cod_inst.numero_vector((String) lista.get(1));
-                Rn = cod_inst.numero_vector((String) lista.get(2));
-
-                System.out.println("VOp1: "+Rn);
-
+                op=cod_inst.getOpCodeVect();
+                if(lista.size()==4 && inst.equals("movv")==false){
+                   onlyVectOp(op,cod_inst,lista);    
+                }
+                else if(lista.size()==4 && inst.equals("movv")==true){
+                   movImmOp(op, cod_inst, lista);
+                }
+                else if(lista.size()==5 &&inst.equals("strv")==false
+                        && inst.equals("ldrv")==false){
+                    vectImmOp(op, cod_inst, lista);
+                }
+                 else if(lista.size()==5 && (inst.equals("strv")==true 
+                        || inst.equals("ldrv")==true)){
+                    vectMemOp(op,cod_inst,lista);
+                }
+                 else{
+                     movvMultOp(op, cod_inst, lista);
+                 }
+                
+                direccion += 4;
 
                 
+  
                 
             }
             else if (lista.size() == 1) { // Caso de que sea un label
@@ -247,6 +265,114 @@ public class Decodificacion {
 
         //BancoRegistros.setRegistro(15, direccion+4+(bancobranch.getBrach().size()*4)); // caso no de usar pc eliminar esta linea
     }
+    
+    
+    private void movvMultOp(String opCode,Deco_Codigo_Instruccion cod_inst,List lista) throws IOException{
+        String Rm2,Rm3,Rm4;
+        Converter converter = new Converter();
+        Rd = cod_inst.numero_vector((String) lista.get(1));
+        Rm = (String)lista.get(3);
+        Rm2 = (String)lista.get(5);
+        Rm3 = (String)lista.get(7);
+        Rm4 = (String)lista.get(9);
+        Rm=converter.decToBin(Rm);
+        Rm=zerosLeft(Rm,8);
+        
+        Rm2=converter.decToBin(Rm2);
+        Rm2=zerosLeft(Rm2,8);
+        
+        Rm3=converter.decToBin(Rm3);
+        Rm3=zerosLeft(Rm3,8);
+        
+        Rm4=converter.decToBin(Rm4);
+        Rm4=zerosLeft(Rm4,8);
+        System.out.println("Conversion a bin:"+Rm);
+        System.out.println("Conversion a bin:"+Rm2);
+        System.out.println("Conversion a bin:"+Rm3);
+        System.out.println("Conversion a bin:"+Rm4);
+
+        if(Rm.length()>8){    Rm= Rm.substring(Rm.length()-9, Rm.length()-1);             };
+        if(Rm2.length()>8){    Rm2= Rm2.substring(Rm2.length()-9, Rm2.length()-1);             };
+        if(Rm3.length()>8){    Rm3= Rm3.substring(Rm3.length()-9, Rm3.length()-1);             };
+        if(Rm4.length()>8){    Rm4= Rm4.substring(Rm4.length()-9, Rm4.length()-1);             };
+
+        inst_hexa=opCode+Rd+Rm+Rm2+Rm3+Rm4;
+        System.out.println("Instr Hex");
+        System.out.println(inst_hexa);
+        inst_hexa= binaryToHex(inst_hexa);
+        Modificar(inst_hexa, contador_instrucciones);
+    }
+    
+    
+public static String binaryToHex(String bin) {
+   return String.format("%21X", Long.parseLong(bin,2)) ;
+}
+    
+    private void onlyVectOp(String opCode,Deco_Codigo_Instruccion cod_inst,List lista ) throws IOException{
+        Rd = cod_inst.numero_vector((String) lista.get(1));
+        Rn = cod_inst.numero_vector((String) lista.get(2));
+        Rm = cod_inst.numero_vector((String) lista.get(3));
+        inst_hexa=opCode+Rd+Rn+Rm+"000000000000000";
+        System.out.println("instruction in binary"+inst_hexa);
+        inst_hexa= binToHex(inst_hexa);
+        Modificar(inst_hexa, contador_instrucciones);
+    }
+    
+    
+    
+     private void vectImmOp(String opCode,Deco_Codigo_Instruccion cod_inst,List lista ) throws IOException{
+        Converter converter = new Converter();
+        Rd = cod_inst.numero_vector((String) lista.get(1));
+        Rn = cod_inst.numero_vector((String) lista.get(2));
+        Rm = lista.get(4).toString();
+        Rm=converter.decToBin(Rm);
+        Rm=zerosLeft(Rm,19);
+        inst_hexa=opCode+Rd+Rn+Rm;
+        System.out.println("Printing instruction bin:"+inst_hexa);
+        inst_hexa= binToHex(inst_hexa);
+        Modificar(inst_hexa, contador_instrucciones);
+    }
+     
+     
+      private void vectMemOp(String opCode,Deco_Codigo_Instruccion cod_inst,List lista ) throws IOException{
+        Converter converter = new Converter();
+        Rd = cod_inst.numero_vector((String) lista.get(1));
+        Rn = cod_inst.numero_registro((String) lista.get(2));
+        Rm = lista.get(4).toString();
+        Rm=converter.decToBin(Rm);
+        System.out.println("Imm in binary"+Rm);
+        Rm=zerosLeft(Rm,16);
+        System.out.println("RM:"+Rm);
+
+        inst_hexa=opCode+Rd+Rn+Rm+"000";
+        System.out.println("Instruction in hexadecimal"+inst_hexa);
+        inst_hexa= binToHex(inst_hexa);
+        Modificar(inst_hexa, contador_instrucciones);
+    }
+     
+      private void movImmOp(String opCode,Deco_Codigo_Instruccion cod_inst,List lista ) throws IOException{
+        Converter converter = new Converter();
+        Rd = cod_inst.numero_vector((String) lista.get(1));
+        Rm = (String)lista.get(3);
+        Rm=converter.decToBin(Rm);
+        Rm=zerosLeft(Rm,12);
+        System.out.println("Conversion a bin:"+Rm);
+        if(Rm.length()>12){    Rm= Rm.substring(Rm.length()-13, Rm.length()-1);             };
+        inst_hexa=opCode+Rd+Rm+"00000000000";
+        System.out.println("Instr Hex");
+        System.out.println(inst_hexa);
+        inst_hexa= binToHex(inst_hexa);
+        Modificar(inst_hexa, contador_instrucciones);
+    }
+     
+     private String zerosLeft(String instructionMach,int zeros){
+         
+         for (int i = instructionMach.length(); i < zeros; i++) {
+            instructionMach="0"+instructionMach;
+         }
+         return instructionMach;
+         
+     }
 
     public void Modificar(String instruccion, int pos) throws IOException {
         String dir_hexa = extension_signo(Integer.toHexString(direccion), 8);
@@ -434,4 +560,16 @@ public class Decodificacion {
         ext = aux_inm;
         return ext;
     }
+    
+     public String binToHex(String pInput) {
+        String retVal="";
+        
+        int temp = Integer.parseUnsignedInt(pInput, 2);
+        retVal = Integer.toHexString(temp);
+        retVal = retVal.toUpperCase();
+        
+        return retVal;
+    }
+    
+    
 }
