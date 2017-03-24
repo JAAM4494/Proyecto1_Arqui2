@@ -66,13 +66,13 @@ class AnalizadorLexico implements java_cup.runtime.Scanner {
     "\1\1\1\5\1\6\3\5\1\7\1\10\1\11\1\12"+
     "\1\0\2\13\1\4\1\5\1\14\1\5\1\14\1\5"+
     "\1\0\1\5\2\15\2\5\1\0\3\5\3\0\6\5"+
-    "\1\0\10\5\1\0\1\5\1\16\1\17\1\5\1\20"+
-    "\1\21\1\20\1\21\1\22\1\23\1\24\2\25\1\26"+
-    "\1\27\1\30\1\31\1\32\1\30\1\31\1\32\1\33"+
-    "\1\34\1\35\2\36\1\37\1\40\1\41\1\42\1\43"+
-    "\1\44\1\45\1\46\1\0\1\47\1\5\1\47\1\50"+
-    "\1\51\1\52\1\53\1\54\1\55\1\56\1\54\1\55"+
-    "\1\56\1\57\1\60\1\61\1\62\1\63\1\62\1\63";
+    "\1\0\10\5\1\0\1\5\1\16\1\17\1\20\1\21"+
+    "\1\22\1\21\1\22\1\23\1\24\1\25\2\26\1\27"+
+    "\1\30\1\31\1\32\1\33\1\31\1\32\1\33\1\34"+
+    "\1\35\1\36\2\37\1\40\1\41\1\42\1\43\1\44"+
+    "\1\45\1\46\1\47\1\0\1\50\1\5\1\50\1\51"+
+    "\1\52\1\53\1\54\1\55\1\56\1\57\1\55\1\56"+
+    "\1\57\1\60\1\61\1\62\1\63\1\64\1\63\1\64";
 
   private static int [] zzUnpackAction() {
     int [] result = new int[117];
@@ -732,259 +732,264 @@ class AnalizadorLexico implements java_cup.runtime.Scanner {
           { System.out.println("Se ha añadido un error lexico"+yytext());
 							moduloErrores.setErrorLexico(yycolumn, yyline, yytext());
           }
-        case 52: break;
+        case 53: break;
         case 2: 
           { añadirInstruccion();
           }
-        case 53: break;
+        case 54: break;
         case 3: 
           { /* ignora el espacio */
           }
-        case 54: break;
+        case 55: break;
         case 4: 
           { añadirTermino (yytext());
                       return symbol(sym.DECIMAL, new Integer(yytext()));
           }
-        case 55: break;
+        case 56: break;
         case 5: 
           { //System.out.println("Etiqueta ingresada");
 					  añadirTermino (yytext());
                       return symbol(sym.ETIQUETA);
           }
-        case 56: break;
+        case 57: break;
         case 6: 
           { añadirTermino ("b");
                           return symbol(sym.B);
           }
-        case 57: break;
+        case 58: break;
         case 7: 
           { return symbol(sym.COMA);
           }
-        case 58: break;
+        case 59: break;
         case 8: 
           { añadirTermino ("#");	
 							return symbol(sym.NUMERAL);
           }
-        case 59: break;
+        case 60: break;
         case 9: 
           { //añadirTermino ("[");
                           return symbol(sym.LLAVEIZQ);
           }
-        case 60: break;
+        case 61: break;
         case 10: 
           { //añadirTermino ("]");
                           return symbol(sym.LLAVEDER);
           }
-        case 61: break;
+        case 62: break;
         case 11: 
           { //System.out.println("Comentario ingresado");
 					añadirInstruccion();
           }
-        case 62: break;
+        case 63: break;
         case 12: 
           { añadirTermino (yytext().toLowerCase());
                       return symbol(sym.REGISTRO, yytext());
           }
-        case 63: break;
+        case 64: break;
         case 13: 
           { añadirTermino (yytext().toLowerCase());
                       return symbol(sym.VECTOR, yytext());
           }
-        case 64: break;
+        case 65: break;
         case 14: 
           { añadirTermino ("rrx");
                           return symbol(sym.RRX);
           }
-        case 65: break;
+        case 66: break;
         case 15: 
           { añadirTermino ("ror");
                           return symbol(sym.ROR);
           }
-        case 66: break;
+        case 67: break;
         case 16: 
+          { añadirTermino ("rol");
+                          return symbol(sym.ROL);
+          }
+        case 68: break;
+        case 17: 
           { añadirTermino ("rsb");
                           return symbol(sym.RSB);
           }
-        case 67: break;
-        case 17: 
+        case 69: break;
+        case 18: 
           { añadirTermino ("rsc");
                           return symbol(sym.RSC);
           }
-        case 68: break;
-        case 18: 
+        case 70: break;
+        case 19: 
           { añadirTermino ("and");
                           return symbol(sym.AND);
           }
-        case 69: break;
-        case 19: 
+        case 71: break;
+        case 20: 
           { añadirTermino ("add");
 		          System.out.println("Prueba");
                           return symbol(sym.ADD);
           }
-        case 70: break;
-        case 20: 
+        case 72: break;
+        case 21: 
           { añadirTermino ("adc");
                           return symbol(sym.ADC);
           }
-        case 71: break;
-        case 21: 
+        case 73: break;
+        case 22: 
           { añadirTermino ("asr");
                           return symbol(sym.ASR);
           }
-        case 72: break;
-        case 22: 
+        case 74: break;
+        case 23: 
           { añadirTermino ("eor");
                           return symbol(sym.EOR);
           }
-        case 73: break;
-        case 23: 
+        case 75: break;
+        case 24: 
           { añadirTermino ("orr");
                           return symbol(sym.ORR);
           }
-        case 74: break;
-        case 24: 
+        case 76: break;
+        case 25: 
           { añadirTermino ("sub");
                           return symbol(sym.SUB);
           }
-        case 75: break;
-        case 25: 
+        case 77: break;
+        case 26: 
           { añadirTermino ("sbc");
                           return symbol(sym.SBC);
           }
-        case 76: break;
-        case 26: 
+        case 78: break;
+        case 27: 
           { añadirTermino ("str");
                           return symbol(sym.STR);
           }
-        case 77: break;
-        case 27: 
+        case 79: break;
+        case 28: 
           { añadirTermino ("bne");
                           return symbol(sym.BNE);
           }
-        case 78: break;
-        case 28: 
+        case 80: break;
+        case 29: 
           { añadirTermino ("beq");
                           return symbol(sym.BEQ);
           }
-        case 79: break;
-        case 29: 
+        case 81: break;
+        case 30: 
           { añadirTermino ("blt");
                           return symbol(sym.BLT);
           }
-        case 80: break;
-        case 30: 
+        case 82: break;
+        case 31: 
           { añadirTermino ("bic");
                           return symbol(sym.BIC);
           }
-        case 81: break;
-        case 31: 
+        case 83: break;
+        case 32: 
           { añadirTermino ("bgt");
                           return symbol(sym.BGT);
           }
-        case 82: break;
-        case 32: 
+        case 84: break;
+        case 33: 
           { añadirTermino ("cmn");
                           return symbol(sym.CMN);
           }
-        case 83: break;
-        case 33: 
+        case 85: break;
+        case 34: 
           { añadirTermino ("cmp");
                           return symbol(sym.CMP);
           }
-        case 84: break;
-        case 34: 
+        case 86: break;
+        case 35: 
           { añadirTermino ("mvn");
                           return symbol(sym.MVN);
           }
-        case 85: break;
-        case 35: 
+        case 87: break;
+        case 36: 
           { añadirTermino ("mov");
 
                           return symbol(sym.MOV);
           }
-        case 86: break;
-        case 36: 
+        case 88: break;
+        case 37: 
           { añadirTermino ("mul");
                           return symbol(sym.MUL);
           }
-        case 87: break;
-        case 37: 
+        case 89: break;
+        case 38: 
           { añadirTermino ("mla");
                           return symbol(sym.MLA);
           }
-        case 88: break;
-        case 38: 
+        case 90: break;
+        case 39: 
           { añadirTermino ("ldr");
                           return symbol(sym.LDR);
           }
-        case 89: break;
-        case 39: 
+        case 91: break;
+        case 40: 
           { añadirTermino ("lsl");
                           return symbol(sym.LSL);
           }
-        case 90: break;
-        case 40: 
+        case 92: break;
+        case 41: 
           { añadirTermino ("rorv");
                           return symbol(sym.RORV);
           }
-        case 91: break;
-        case 41: 
+        case 93: break;
+        case 42: 
           { añadirTermino ("rolv");
                           return symbol(sym.ROLV);
           }
-        case 92: break;
-        case 42: 
+        case 94: break;
+        case 43: 
           { añadirTermino ("addv");
 
                           return symbol(sym.ADDV);
           }
-        case 93: break;
-        case 43: 
+        case 95: break;
+        case 44: 
           { añadirTermino ("eorv");
                           return symbol(sym.EORV);
           }
-        case 94: break;
-        case 44: 
+        case 96: break;
+        case 45: 
           { añadirTermino ("subv");
                           return symbol(sym.SUBV);
           }
-        case 95: break;
-        case 45: 
+        case 97: break;
+        case 46: 
           { añadirTermino ("strv");
                           return symbol(sym.STRV);
           }
-        case 96: break;
-        case 46: 
+        case 98: break;
+        case 47: 
           { añadirTermino ("strb");
                           return symbol(sym.STRB);
           }
-        case 97: break;
-        case 47: 
+        case 99: break;
+        case 48: 
           { añadirTermino ("movv");
 
                           return symbol(sym.MOVV);
           }
-        case 98: break;
-        case 48: 
+        case 100: break;
+        case 49: 
           { añadirTermino ("ldrv");
                           return symbol(sym.LDRV);
           }
-        case 99: break;
-        case 49: 
+        case 101: break;
+        case 50: 
           { añadirTermino ("ldrb");
                           return symbol(sym.LDRB);
           }
-        case 100: break;
-        case 50: 
+        case 102: break;
+        case 51: 
           { añadirTermino ("lsrv");
                           return symbol(sym.LSRV);
           }
-        case 101: break;
-        case 51: 
+        case 103: break;
+        case 52: 
           { añadirTermino ("lslv");
                           return symbol(sym.LSLV);
           }
-        case 102: break;
+        case 104: break;
         default: 
           if (zzInput == YYEOF && zzStartRead == zzCurrentPos) {
             zzAtEOF = true;

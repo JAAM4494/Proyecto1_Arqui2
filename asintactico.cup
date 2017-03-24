@@ -56,7 +56,7 @@ parser code {:
    tienen un valor como los enteros son listados en la segunda o demas lineas. */
 terminal            COMA, LLAVEDER, LLAVEIZQ, REGISTRO, VECTOR, ETIQUETA, NUMERAL,
 					AND, EOR, EORV, SUB,SUBV, RSB, ADD,ADDV, ADC, SBC, RSC, ORR, MVN, BIC, MUL, CMP, 
-					CMN, MOV,MOVV, LSL ,LSLV,LSRV, ASR, RRX, ROR,RORV,ROLV, MLA, STR, STRV, LDR, LDRV,STRB, LDRB, B, BEQ, BNE, BGT, BLT;
+					CMN, MOV,MOVV, LSL ,LSLV,LSRV, ASR, RRX, ROR,ROL,RORV,ROLV, MLA, STR, STRV, LDR, LDRV,STRB, LDRB, B, BEQ, BNE, BGT, BLT;
 terminal Integer   DECIMAL;
    
 /* No terminales usados en la seccion gramatical. 
@@ -100,6 +100,7 @@ instruccion1 ::=
 				ASR tresRegistros | ASR dosRegistrosImm |
 				RRX dosRegistros  | 
 				ROR tresRegistros | ROR dosRegistrosImm |
+				ROL tresRegistros | ROL dosRegistrosImm |
 				RORV dosVectoresImm | 
 				ROLV dosVectoresImm | 
 				MLA cuatroRegistros |

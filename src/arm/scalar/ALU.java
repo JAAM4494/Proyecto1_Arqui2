@@ -160,15 +160,62 @@ public class ALU {
           
         String Aux = "", Aux2 = "", bit_rotate;
         String rn = extension_ceros(Long.toBinaryString(Rn_valor));
+        
+            System.out.println("Imprimiendo Rn"+rn);
 
         for (int i = 0; i < 32; i++) {
+
             if (i < inm) {
                 Aux = (rn.charAt(31 - i)) + Aux;
             } else {
                 Aux2 = (rn.charAt(31 - i)) + Aux2;
+
             }
+            System.out.println("Imprimiendo Aux"+Aux);
         }
         bit_rotate = Aux + Aux2;
+        
+        
+        
+        long bit_rotate2 = Long.parseLong(bit_rotate, 2);
+
+        System.out.println("rotacion es " + bit_rotate2);
+        BancoRegistros.setRegistro(Integer.parseInt(Rd.substring(1)), bit_rotate2);
+        
+    }
+    
+    
+     public static void rotateL(String Rd, String Rn, String Src2) {
+        Simulacion simulacion = new Simulacion();
+
+        long inm, Rn_valor;
+        Rn_valor = BancoRegistros.getRegistro(Integer.parseInt(Rn.substring(1)));
+        if (Src2.contains("r")) { //Significa que es un registro
+            inm = BancoRegistros.getRegistro(Integer.parseInt(Src2.substring(1)));
+        } else { //Significa que es un inmediato
+            inm = Long.parseLong(Src2);
+            if(inm > 31)
+                simulacion.reportarError("No es posible realizar un shift con un valor mayor a 31", "Error en corrimiento");
+        }
+          
+        String Aux = "", Aux2 = "", bit_rotate;
+        String rn = extension_ceros(Long.toBinaryString(Rn_valor));
+        
+        //    System.out.println("Imprimiendo Rn"+rn);
+
+        for (int i = 0; i < 32; i++) {
+
+            if (i < inm) {
+                Aux = Aux+(rn.charAt(i))  ;
+            } else {
+                Aux2 = Aux2+ (rn.charAt(i)) ;
+
+            }
+          //  System.out.println("Imprimiendo Aux"+Aux);
+           // System.out.println("Imprimiendo Aux2"+Aux2);
+
+        }
+        bit_rotate = Aux2+Aux;
         
         
         

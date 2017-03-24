@@ -118,7 +118,7 @@ public class CustomDocumentFilter extends DocumentFilter {
         String[] array = {"add", "sub", "mul", "and", "eor", "rsb", "adc", "sbc", "rsc",
             "cmp", "cmn", "orr", "mov", "lsl", "asr", "rrx", "ror", "bic", "mvn", "mla",
             "str", "ldr", "strb", "ldrb", "b","beq", "bne", "blt", "bgt","movv",
-            "addv","subv","eorv","lslv","lsrv","rorv","rolv","strv","ldrv"};
+            "addv","subv","eorv","lslv","lsrv","rorv","rolv","strv","ldrv","rol"};
         for (String token : array) {
             sb.append("\\b"); // Start of word boundary
             sb.append(token);

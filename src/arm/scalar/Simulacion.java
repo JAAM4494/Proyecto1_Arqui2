@@ -258,6 +258,10 @@ public class Simulacion {
             case "ror":
                 ALU.rotate(destino, operando1, operando2);
                 break;
+            case "rol":
+                ALU.rotateL(destino, operando1, operando2);
+                break;    
+                
             case "rorv":
                 ALUVectorial.rotateVectorialR(destino, operando1, operando2);
                 break;

@@ -1,5 +1,5 @@
-movv v1,#247,#247,#247,#255
-rorv v3, v1,#3
-strv v3, [r0, #41020]
+mov r0,#15
+ror r1,r0,#2
+rol r2,r1,#2
 
 ADD R0, R0, #0

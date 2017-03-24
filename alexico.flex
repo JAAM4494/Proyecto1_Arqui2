@@ -101,6 +101,7 @@ Asr = asr
 Rrx = rrx
 Ror = ror
 Rorv = rorv
+Rol = rol
 Rolv = rolv
 Bic = bic
 Mvn = mvn
@@ -230,6 +231,9 @@ Bgt = bgt
 						  
 	{Ror}                {añadirTermino ("ror");
                           return symbol(sym.ROR); }
+
+	{Rol}                {añadirTermino ("rol");
+                          return symbol(sym.ROL); }
 
 	{Rorv}                {añadirTermino ("rorv");
                           return symbol(sym.RORV); }
