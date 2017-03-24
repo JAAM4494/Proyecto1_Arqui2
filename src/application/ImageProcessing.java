@@ -54,11 +54,7 @@ public class ImageProcessing {
     private String addDesencryptCode;
     /////////////////////////////////////////////
     private String xorCodeScalar;
-
-    private String cShiftCodeScalar;
     private String addCodeScalar;
-
-    private String cShiftDesencryptCodeScalar;
     private String addDesencryptCodeScalar;
 
     int posMem = 0;
@@ -117,16 +113,16 @@ public class ImageProcessing {
                             String tempInstr2 = "mov r5,#" + pKey + "\n";
                             
                             sourceCode = tempInstr + tempInstr2 + xorCodeScalar
-                                    + "str r6, [r0, #" + memoryAdd + "]";
+                                    + "str r6, [r0,#" + memoryAdd + "]" + "\n";
                             memoryAdd += 4;
                             sourceCode = sourceCode
-                                    + "str r7, [r0, #" + memoryAdd + "]";
+                                    + "str r7, [r0,#" + memoryAdd + "]" + "\n";
                             memoryAdd += 4;
                             sourceCode = sourceCode
-                                    + "str r8, [r0, #" + memoryAdd + "]";
+                                    + "str r8, [r0,#" + memoryAdd + "]" + "\n";
                             memoryAdd += 4;
                             sourceCode = sourceCode
-                                    + "str r9, [r0, #" + memoryAdd + "]" + endLine;
+                                    + "str r9, [r0,#" + memoryAdd + "]" + endLine;
                             memoryAdd += 4;
                         } else {
                             String tempInstr2 = "movv v2,#" + pKey + "\n";
@@ -144,16 +140,16 @@ public class ImageProcessing {
                                     + "mov r4,#" + tempVector.getAlpha() + "\n";
                             
                             sourceCode = tempInstr + "lsl r5, r1,#" + pShiftNumber + "\n"
-                                    + "str r5, [r0, #" + memoryAdd + "]";
+                                    + "str r5, [r0, #" + memoryAdd + "] \n";
                             memoryAdd += 4;
                             sourceCode = sourceCode + "lsl r6, r2,#" + pShiftNumber + "\n"
-                                    + "str r6, [r0, #" + memoryAdd + "]";
+                                    + "str r6, [r0, #" + memoryAdd + "] \n";
                             memoryAdd += 4;
                             sourceCode = sourceCode + "lsl r7, r3,#" + pShiftNumber + "\n"
-                                    + "str r7, [r0, #" + memoryAdd + "]";
+                                    + "str r7, [r0, #" + memoryAdd + "] \n";
                             memoryAdd += 4;
                             sourceCode = sourceCode + "lsl r8, r4,#" + pShiftNumber + "\n"
-                                    + "str r8, [r0, #" + memoryAdd + "]" + endLine;
+                                    + "str r8, [r0, #" + memoryAdd + "] \n" + endLine;
                             memoryAdd += 4;
                         } else {
                             //String tempInstr3 = "movv v2,#" + pShiftNumber + "\n";
@@ -169,11 +165,24 @@ public class ImageProcessing {
                                     + "mov r2,#" + tempVector.getGreen() + "\n" 
                                     + "mov r3,#" + tempVector.getBlue() + "\n"
                                     + "mov r4,#" + tempVector.getAlpha() + "\n";
+                            
+                            sourceCode = tempInstr + "rol r5, r1,#" + pShiftNumber + "\n"
+                                    + "str r5, [r0, #" + memoryAdd + "] \n";
+                            memoryAdd += 4;
+                            sourceCode = sourceCode + "rol r6, r2,#" + pShiftNumber + "\n"
+                                    + "str r6, [r0, #" + memoryAdd + "] \n";
+                            memoryAdd += 4;
+                            sourceCode = sourceCode + "rol r7, r3,#" + pShiftNumber + "\n"
+                                    + "str r7, [r0, #" + memoryAdd + "] \n";
+                            memoryAdd += 4;
+                            sourceCode = sourceCode + "rol r8, r4,#" + pShiftNumber + "\n"
+                                    + "str r8, [r0, #" + memoryAdd + "] \n" + endLine;
+                            memoryAdd += 4;
                         } else {
                             //String tempInstr4 = "movv v2,#" + pShiftNumber + "\n";
 
                             sourceCode = tempInstr + cShiftCode + pShiftNumber + "\n"
-                                    + "strv v3, [r0, #" + memoryAdd + "]" + endLine;
+                                    + "strv v3, [r0, #" + memoryAdd + "] \n" + endLine;
                         }
 
                         break;
@@ -190,16 +199,16 @@ public class ImageProcessing {
                                     + "mov r8,#" + pKeyVector.getAlpha() + "\n";
                             
                             sourceCode = tempInstr + tempInstr5 + addCodeScalar
-                                    + "str r9, [r0, #" + memoryAdd + "]";
+                                    + "str r9, [r0, #" + memoryAdd + "] \n";
                             memoryAdd += 4;
                             sourceCode = sourceCode
-                                    + "str r10, [r0, #" + memoryAdd + "]";
+                                    + "str r10, [r0, #" + memoryAdd + "] \n";
                             memoryAdd += 4;
                             sourceCode = sourceCode
-                                    + "str r11, [r0, #" + memoryAdd + "]";
+                                    + "str r11, [r0, #" + memoryAdd + "] \n";
                             memoryAdd += 4;
                             sourceCode = sourceCode
-                                    + "str r12, [r0, #" + memoryAdd + "]" + endLine;
+                                    + "str r12, [r0, #" + memoryAdd + "] \n" + endLine;
                             memoryAdd += 4;
                         } else {
                             String tempInstr5 = "movv v2,#" + pKeyVector.getRed()
@@ -213,12 +222,12 @@ public class ImageProcessing {
                         break;
                 }
                 // next step, pass assembler code to the architecture
-                compileCode(0);
+                compileCode(0,pSacalar);
                 if(pSacalar != 0) {
                     memoryAdd += 4;
+                    posMem += 1;
                 }
-                posMem += 1;
-
+              
             }
         }
     }
@@ -232,6 +241,8 @@ public class ImageProcessing {
         int memoryAdd = 1024;
         posMem = 0;
         tmpArrayList = new ArrayList<>();
+
+        temporalColorModel = new ColorModel();
 
         counter = 0;
 
@@ -261,17 +272,17 @@ public class ImageProcessing {
                             
                             String tempInstr2 = "mov r5,#" + pKey + "\n";
                             
-                            sourceCode = tempInstr + tempInstr2 + xorCodeScalar
-                                    + "str r6, [r0, #" + memoryAdd + "]";
+                            sourceCode = tempInstr + tempInstr2 + xorCodeScalar + "\n"
+                                    + "str r6, [r0,#" + memoryAdd + "]" + "\n";
                             memoryAdd += 4;
                             sourceCode = sourceCode
-                                    + "str r7, [r0, #" + memoryAdd + "]";
+                                    + "str r7, [r0,#" + memoryAdd + "]" + "\n";
                             memoryAdd += 4;
                             sourceCode = sourceCode
-                                    + "str r8, [r0, #" + memoryAdd + "]";
+                                    + "str r8, [r0,#" + memoryAdd + "]" + "\n";
                             memoryAdd += 4;
                             sourceCode = sourceCode
-                                    + "str r9, [r0, #" + memoryAdd + "]" + endLine;
+                                    + "str r9, [r0,#" + memoryAdd + "]" + endLine;
                             memoryAdd += 4;
                         } else {
                             String tempInstr2 = "movv v2,#" + pKey + "\n";
@@ -288,17 +299,17 @@ public class ImageProcessing {
                                     + "mov r3,#" + tempVector.getBlue() + "\n"
                                     + "mov r4,#" + tempVector.getAlpha() + "\n";
                             
-                            sourceCode = tempInstr + "lsr r5, r1,#" + pShiftNumber + "\n"
-                                    + "str r5, [r0, #" + memoryAdd + "]";
+                            sourceCode = tempInstr + "asr r5, r1,#" + pShiftNumber + "\n"
+                                    + "str r5, [r0, #" + memoryAdd + "] \n";
                             memoryAdd += 4;
-                            sourceCode = sourceCode + "lsr r6, r2,#" + pShiftNumber + "\n"
-                                    + "str r6, [r0, #" + memoryAdd + "]";
+                            sourceCode = sourceCode + "asr r6, r2,#" + pShiftNumber + "\n"
+                                    + "str r6, [r0, #" + memoryAdd + "] \n";
                             memoryAdd += 4;
-                            sourceCode = sourceCode + "lsr r7, r3,#" + pShiftNumber + "\n"
-                                    + "str r7, [r0, #" + memoryAdd + "]";
+                            sourceCode = sourceCode + "asr r7, r3,#" + pShiftNumber + "\n"
+                                    + "str r7, [r0, #" + memoryAdd + "] \n";
                             memoryAdd += 4;
-                            sourceCode = sourceCode + "lsr r8, r4,#" + pShiftNumber + "\n"
-                                    + "str r8, [r0, #" + memoryAdd + "]" + endLine;
+                            sourceCode = sourceCode + "asr r8, r4,#" + pShiftNumber + "\n"
+                                    + "str r8, [r0, #" + memoryAdd + "] \n" + endLine;
                             memoryAdd += 4;
                         } else {
                             //String tempInstr3 = "movv v2,#" + pShiftNumber + "\n";
@@ -314,6 +325,19 @@ public class ImageProcessing {
                                     + "mov r2,#" + tempVector.getGreen() + "\n" 
                                     + "mov r3,#" + tempVector.getBlue() + "\n"
                                     + "mov r4,#" + tempVector.getAlpha() + "\n";
+                            
+                            sourceCode = tempInstr + "ror r5, r1,#" + pShiftNumber + "\n"
+                                    + "str r5, [r0, #" + memoryAdd + "] \n";
+                            memoryAdd += 4;
+                            sourceCode = sourceCode + "ror r6, r2,#" + pShiftNumber + "\n"
+                                    + "str r6, [r0, #" + memoryAdd + "] \n";
+                            memoryAdd += 4;
+                            sourceCode = sourceCode + "ror r7, r3,#" + pShiftNumber + "\n"
+                                    + "str r7, [r0, #" + memoryAdd + "] \n";
+                            memoryAdd += 4;
+                            sourceCode = sourceCode + "ror r8, r4,#" + pShiftNumber + "\n"
+                                    + "str r8, [r0, #" + memoryAdd + "] \n" + endLine;
+                            memoryAdd += 4;
                         } else {
                             //String tempInstr4 = "movv v2,#" + pShiftNumber + "\n";
 
@@ -335,16 +359,16 @@ public class ImageProcessing {
                                     + "mov r8,#" + pKeyVector.getAlpha() + "\n";
                             
                             sourceCode = tempInstr + tempInstr5 + addDesencryptCodeScalar
-                                    + "str r9, [r0, #" + memoryAdd + "]";
+                                    + "str r9, [r0, #" + memoryAdd + "] \n";
                             memoryAdd += 4;
                             sourceCode = sourceCode
-                                    + "str r10, [r0, #" + memoryAdd + "]";
+                                    + "str r10, [r0, #" + memoryAdd + "] \n";
                             memoryAdd += 4;
                             sourceCode = sourceCode
-                                    + "str r11, [r0, #" + memoryAdd + "]";
+                                    + "str r11, [r0, #" + memoryAdd + "] \n";
                             memoryAdd += 4;
                             sourceCode = sourceCode
-                                    + "str r12, [r0, #" + memoryAdd + "]" + endLine;
+                                    + "str r12, [r0, #" + memoryAdd + "] \n" + endLine;
                             memoryAdd += 4;
                         } else {
                             String tempInstr5 = "movv v2,#" + pKeyVector.getRed()
@@ -358,16 +382,17 @@ public class ImageProcessing {
                         break;
                 }
                 // next step, pass assembler code to the architecture
-                compileCode(1);
+                compileCode(1,pSacalar);
                 if(pSacalar != 0) {
                     memoryAdd += 4;
+                    posMem += 1;
                 }
-                posMem += 1;
+                
             }
         }
     }
 
-    private void compileCode(int pSelection) throws IOException {
+    private void compileCode(int pSelection,int pAlgorithm) throws IOException {
         ////////
         //////// Architecture Initialization
         ////////
@@ -394,9 +419,17 @@ public class ImageProcessing {
         }
 
         if (pSelection == 0) {
-            storeEncryptData();
+            if(pAlgorithm == 0) {
+                buildEncryptedImageScalar(Memoria_Ram[posMem]);
+            } else {
+                storeEncryptData();
+            }
         } else {
-            buildDesencryptedImage(Memoria_Ram[posMem]);
+            if(pAlgorithm == 0) {
+                buildDesencryptedImageScalar(Memoria_Ram[posMem]);
+            } else {
+                buildDesencryptedImage(Memoria_Ram[posMem]);
+            }
         }
 
         //Borrar el contenido actual de las instrucciones, banderas, ensamblaje, memoria, branch y registros
@@ -500,6 +533,91 @@ public class ImageProcessing {
         }
 
     }
+    
+    
+    private ColorModel temporalColorModel = new ColorModel();
+    
+        private void buildEncryptedImageScalar(String pData) {
+        
+
+        int temp = Integer.parseUnsignedInt(pData, 16); // hex to dec
+
+        System.out.println("Dato de Memoria_Encrypted_R:" + temp);
+
+        //byte[] pixel = toBytes(temp);
+        
+        temporalColorModel.setRed(temp);
+        posMem +=1;
+        temp = Integer.parseUnsignedInt(Memoria_Ram[posMem], 16);
+        System.out.println("Dato de Memoria_Encrypted_G:" + temp);
+        temporalColorModel.setGreen(temp);
+        posMem +=1;
+        temp = Integer.parseUnsignedInt(Memoria_Ram[posMem], 16);
+        System.out.println("Dato de Memoria_Encrypted_B:" + temp);
+        temporalColorModel.setBlue(temp);
+        posMem +=1;
+        temp = Integer.parseUnsignedInt(Memoria_Ram[posMem], 16);
+        System.out.println("Dato de Memoria_Encrypted_A:" + temp);
+        temporalColorModel.setAlpha(temp);
+        posMem +=1;
+        
+        tmpArrayList.add(temporalColorModel);
+        temporalColorModel = new ColorModel();
+        
+
+        if (counter == 99) {
+            encryptedMatrix.add(tmpArrayList);
+            tmpArrayList = new ArrayList<>();
+            counter = 0;
+        } else {
+            counter += 1;
+        }
+
+        /*if(posMem%100==0 && posMem!=0){ //Se completa la primera fila
+            tmpArrayList.remove(tmpArrayList.size()-1); //se debe eliminar el ultimo ya que 
+                                        //sobrepasa 100 elementos
+            encryptedMatrix.add(tmpArrayList); //Se agrega matriz principal
+            tmpArrayList=new ArrayList<>(); 
+            tmpArrayList.add(tmp);        
+        }*/
+    }
+        
+            private void buildDesencryptedImageScalar(String pData) {
+        ColorModel tmp = new ColorModel();
+
+        int temp = Integer.parseUnsignedInt(pData, 16); // hex to dec
+
+        System.out.println("Dato de Memoria_Desencrypted:" + temp);
+
+        //byte[] pixel = toBytes(temp);
+
+        temporalColorModel.setRed(temp);
+        posMem +=1;
+        temp = Integer.parseUnsignedInt(Memoria_Ram[posMem], 16);
+        System.out.println("Dato de Memoria_Encrypted_G:" + temp);
+        temporalColorModel.setGreen(temp);
+        posMem +=1;
+        temp = Integer.parseUnsignedInt(Memoria_Ram[posMem], 16);
+        System.out.println("Dato de Memoria_Encrypted_B:" + temp);
+        temporalColorModel.setBlue(temp);
+        posMem +=1;
+        temp = Integer.parseUnsignedInt(Memoria_Ram[posMem], 16);
+        System.out.println("Dato de Memoria_Encrypted_A:" + temp);
+        temporalColorModel.setAlpha(temp);
+        posMem +=1;
+        
+        tmpArrayList.add(temporalColorModel);
+        temporalColorModel = new ColorModel();
+
+        if (counter == 99) {
+            desencryptedMatrix.add(tmpArrayList);
+            tmpArrayList = new ArrayList<>();
+            counter = 0;
+        } else {
+            counter += 1;
+        }
+
+    }
 
     byte[] toBytes(int i) {
         byte[] result = new byte[4];
@@ -521,5 +639,14 @@ public class ImageProcessing {
         sShiftDesencryptCode = "lsrv v3, v1,#";
         cShiftDesencryptCode = "rorv v3, v1,#";
         addDesencryptCode = "subv v3, v1, v2 \n";
+        
+        ////
+        
+        xorCodeScalar = "eor r6,r1,r5 \n eor r7,r2,r5 \n eor r8,r3,r5 \n eor r9,r4,r5 \n";
+        addCodeScalar = "add r9,r1,r5 \n add r10,r2,r6 \n add r11,r3,r7 \n add r12,r4,r8 \n";
+        addDesencryptCodeScalar = "sub r9,r1,r5 \n sub r10,r2,r6 \n sub r11,r3,r7 \n sub r12,r4,r8 \n";
+        
+        
+        
     }
 }
